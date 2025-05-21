@@ -1,0 +1,12 @@
+# Ignore artifacts:
+.next
+node_modules
+public
+out
+build
+coverage
+.vercel
+.env*
+*.md
+*.log
+package-lock.json
