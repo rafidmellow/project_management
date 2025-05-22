@@ -54,7 +54,7 @@ export async function PUT(req: NextRequest) {
     }
 
     // Check if user has permission to manage roles
-    const hasPermission = await PermissionService.hasPermission(session.user.role, 'manage_roles');
+    const hasPermission = await PermissionService.hasPermissionById(session.user.id, 'manage_roles');
     if (!hasPermission) {
       return NextResponse.json({ error: 'Forbidden: Insufficient permissions' }, { status: 403 });
     }
