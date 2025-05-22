@@ -3,11 +3,14 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcrypt';
 import prisma from '@/lib/prisma';
 import { googleProvider } from '@/providers';
+import type { Provider } from 'next-auth/providers';
 
 export const authOptions: NextAuthOptions = {
   providers: [
     // Include Google provider only if it's configured
-    ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET ? [googleProvider] : []),
+    ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
+      ? [googleProvider as Provider]
+      : []),
     CredentialsProvider({
       name: 'Credentials',
       credentials: {

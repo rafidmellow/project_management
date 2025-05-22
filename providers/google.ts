@@ -1,4 +1,4 @@
-import { OAuthConfig } from '@/types/next-auth-providers';
+import type { OAuthConfig } from 'next-auth/providers';
 import { GoogleProfile } from '@/types/oauth';
 
 // Only create the Google provider if credentials are available
