@@ -78,6 +78,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'User ID and role name are required' }, { status: 400 });
     }
 
+    // Ensure the role exists before updating
+    const roleExists = await prisma.role.findUnique({
+      where: { name: roleName },
+      select: { id: true },
+    });
+
+    if (!roleExists) {
+      return NextResponse.json({ error: 'Invalid role name' }, { status: 400 });
+    }
+
     // Update the user's role
     const success = await prisma.user
       .update({
@@ -130,6 +140,16 @@ export async function DELETE(req: NextRequest) {
     // Validate request data
     if (!userId || !roleName) {
       return NextResponse.json({ error: 'User ID and role name are required' }, { status: 400 });
+    }
+
+    // Ensure the role exists before resetting
+    const roleExists = await prisma.role.findUnique({
+      where: { name: roleName },
+      select: { id: true },
+    });
+
+    if (!roleExists) {
+      return NextResponse.json({ error: 'Invalid role name' }, { status: 400 });
     }
 
     // We can't remove a role, only update it to a different role
