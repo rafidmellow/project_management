@@ -56,7 +56,7 @@ export function TaskFilterNew() {
   const handlePriorityChange = (value: string) => {
     setFilters({
       ...filters,
-      priority: value === 'all' ? null : (value as 'low' | 'medium' | 'high')
+      priority: value === 'all' ? null : (value as 'low' | 'medium' | 'high'),
     });
   };
 

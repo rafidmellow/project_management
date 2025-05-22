@@ -312,7 +312,7 @@ export function TaskProvider({
             newParentId: null,
             oldParentId: null,
             targetTaskId,
-            isSameParentReorder: true
+            isSameParentReorder: true,
           }),
         });
 

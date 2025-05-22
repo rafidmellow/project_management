@@ -286,8 +286,12 @@ export function TaskForm({ projectId, taskId, parentId, onSuccess, onCancel }: T
         ...values,
         projectId: !taskId ? projectId : undefined,
         // Ensure these are properly formatted for the API
-        estimatedTime: values.estimatedTime === null || values.estimatedTime === undefined ? null : values.estimatedTime,
-        timeSpent: values.timeSpent === null || values.timeSpent === undefined ? null : values.timeSpent,
+        estimatedTime:
+          values.estimatedTime === null || values.estimatedTime === undefined
+            ? null
+            : values.estimatedTime,
+        timeSpent:
+          values.timeSpent === null || values.timeSpent === undefined ? null : values.timeSpent,
         // Make sure assigneeIds is an array
         assigneeIds: Array.isArray(values.assigneeIds) ? values.assigneeIds : [],
         // Format dates - ensure they're properly formatted ISO strings

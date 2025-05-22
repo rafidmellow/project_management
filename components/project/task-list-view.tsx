@@ -311,7 +311,11 @@ export function TaskListView({
                     {task.dueDate ? (
                       <div className="flex items-center gap-1">
                         <Calendar className="h-3 w-3" />
-                        {formatDate(typeof task.dueDate === 'string' ? task.dueDate : task.dueDate.toISOString())}
+                        {formatDate(
+                          typeof task.dueDate === 'string'
+                            ? task.dueDate
+                            : task.dueDate.toISOString()
+                        )}
                       </div>
                     ) : (
                       '-'

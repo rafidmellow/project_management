@@ -415,7 +415,7 @@ export default function ProjectPage() {
               <KanbanBoard
                 projectId={projectId}
                 onEditTask={handleEditTask}
-                onDeleteTask={(taskId) => {
+                onDeleteTask={taskId => {
                   // Handle task deletion
                   console.log('Delete task:', taskId);
                 }}

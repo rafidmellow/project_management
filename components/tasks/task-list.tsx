@@ -434,7 +434,12 @@ export function TaskList({
 
     // Update column headers to use external sorting if provided
     return cols.map(col => {
-      if ('accessorKey' in col && col.accessorKey && col.header && typeof col.header === 'function') {
+      if (
+        'accessorKey' in col &&
+        col.accessorKey &&
+        col.header &&
+        typeof col.header === 'function'
+      ) {
         return {
           ...col,
           header: ({ column }: any) => {

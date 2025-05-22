@@ -497,5 +497,3 @@ export function isWorkDay(date: Date): boolean {
 export function formatDateLegacy(date: string | null, formatString = 'MMM d, yyyy'): string {
   return formatDate(date, formatString);
 }
-
-

@@ -124,15 +124,19 @@ export default function UsersPage() {
               users={users}
               viewMode={viewMode}
               isLoading={isLoading}
-              pagination={pagination ? {
-                total: pagination.total,
-                totalCount: pagination.total,
-                page: pagination.page,
-                limit: pagination.limit,
-                pageSize: pagination.limit,
-                totalPages: pagination.totalPages,
-                pageCount: pagination.totalPages
-              } : undefined}
+              pagination={
+                pagination
+                  ? {
+                      total: pagination.total,
+                      totalCount: pagination.total,
+                      page: pagination.page,
+                      limit: pagination.limit,
+                      pageSize: pagination.limit,
+                      totalPages: pagination.totalPages,
+                      pageCount: pagination.totalPages,
+                    }
+                  : undefined
+              }
               currentPage={currentPage}
               onPageChange={handlePageChange}
               onUserDeleted={() => mutate()}

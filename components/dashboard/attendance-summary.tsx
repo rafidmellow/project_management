@@ -150,7 +150,8 @@ export function AttendanceSummary({ period, title, subtitle, className }: Attend
                     maxHoursPerDay: WORK_DAY.MAX_HOURS_PER_DAY,
                   })
                 : 0),
-            activeSessionStart: hasActiveSession && attendance ? new Date(attendance.checkInTime) : undefined,
+            activeSessionStart:
+              hasActiveSession && attendance ? new Date(attendance.checkInTime) : undefined,
             hasActiveSession,
           };
 

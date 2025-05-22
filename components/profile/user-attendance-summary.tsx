@@ -155,13 +155,29 @@ export function UserAttendanceSummary({ userId }: UserAttendanceSummaryProps) {
                     <div className="flex justify-between items-start">
                       <div>
                         <div className="font-medium">
-                          {safeFormat(typeof record.checkInTime === 'string' ? record.checkInTime : record.checkInTime.toISOString(), 'EEEE, MMMM d, yyyy')}
+                          {safeFormat(
+                            typeof record.checkInTime === 'string'
+                              ? record.checkInTime
+                              : record.checkInTime.toISOString(),
+                            'EEEE, MMMM d, yyyy'
+                          )}
                         </div>
                         <div className="text-sm text-muted-foreground flex items-center mt-1">
                           <Clock className="h-3 w-3 mr-1" />
-                          {safeFormat(typeof record.checkInTime === 'string' ? record.checkInTime : record.checkInTime.toISOString(), 'h:mm a')} -
+                          {safeFormat(
+                            typeof record.checkInTime === 'string'
+                              ? record.checkInTime
+                              : record.checkInTime.toISOString(),
+                            'h:mm a'
+                          )}{' '}
+                          -
                           {record.checkOutTime
-                            ? safeFormat(typeof record.checkOutTime === 'string' ? record.checkOutTime : record.checkOutTime.toISOString(), ' h:mm a')
+                            ? safeFormat(
+                                typeof record.checkOutTime === 'string'
+                                  ? record.checkOutTime
+                                  : record.checkOutTime.toISOString(),
+                                ' h:mm a'
+                              )
                             : ' Present'}
                         </div>
                         {record.checkInLocationName && (

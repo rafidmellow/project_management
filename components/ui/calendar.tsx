@@ -8,7 +8,10 @@ import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 
 // Create a custom type that extends DayPicker props but allows for string dates
-export type CalendarProps = Omit<React.ComponentProps<typeof DayPicker>, 'selected' | 'mode' | 'onSelect'> & {
+export type CalendarProps = Omit<
+  React.ComponentProps<typeof DayPicker>,
+  'selected' | 'mode' | 'onSelect'
+> & {
   selected?: Date | Date[] | null | string | string[];
   onSelect?: (date: Date | undefined) => void;
 };
@@ -94,7 +97,7 @@ function Calendar({
         IconLeft: ({ ...props }) => <ChevronLeft className="h-4 w-4" />,
         IconRight: ({ ...props }) => <ChevronRight className="h-4 w-4" />,
       }}
-      selected={parsedSelected as Date || undefined}
+      selected={(parsedSelected as Date) || undefined}
       onSelect={handleSelect}
       {...props}
     />
