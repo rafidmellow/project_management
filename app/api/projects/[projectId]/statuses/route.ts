@@ -1,12 +1,15 @@
+import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { z } from 'zod';
 import prisma from '@/lib/prisma';
 import { authOptions } from '@/lib/auth-options';
-import { ApiRouteHandlerOneParam, getParams } from '@/lib/api-route-types';
 
 // GET: Fetch all statuses for a project
-export const GET: ApiRouteHandlerOneParam<'projectId'> = async (_req, { params }) => {
+export async function GET(
+  _req: NextRequest,
+  { params }: { params: { projectId: string } }
+): Promise<Response> {
   try {
     const session = await getServerSession(authOptions);
 
@@ -14,7 +17,7 @@ export const GET: ApiRouteHandlerOneParam<'projectId'> = async (_req, { params }
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const projectId = await getParams(params).then(p => p.projectId);
+    const { projectId } = params;
 
     // Check if project exists and user has access
     const project = await prisma.project.findUnique({
@@ -44,10 +47,13 @@ export const GET: ApiRouteHandlerOneParam<'projectId'> = async (_req, { params }
       { status: 500 }
     );
   }
-};
+}
 
 // POST: Create a new status for a project
-export const POST: ApiRouteHandlerOneParam<'projectId'> = async (req, { params }) => {
+export async function POST(
+  req: NextRequest,
+  { params }: { params: { projectId: string } }
+): Promise<Response> {
   try {
     const session = await getServerSession(authOptions);
 
@@ -55,7 +61,7 @@ export const POST: ApiRouteHandlerOneParam<'projectId'> = async (req, { params }
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const projectId = await getParams(params).then(p => p.projectId);
+    const { projectId } = params;
 
     // Check if project exists and user has access
     const project = await prisma.project.findUnique({
@@ -173,4 +179,4 @@ export const POST: ApiRouteHandlerOneParam<'projectId'> = async (req, { params }
       { status: 500 }
     );
   }
-};
+}

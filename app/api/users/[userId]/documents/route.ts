@@ -1,3 +1,4 @@
+import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import prisma from '@/lib/prisma';
@@ -7,10 +8,12 @@ import { join } from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { existsSync } from 'fs';
 import { PermissionService } from '@/lib/permissions/unified-permission-service';
-import { ApiRouteHandlerOneParam, getParams } from '@/lib/api-route-types';
 
 // GET /api/users/[userId]/documents - Get documents for a specific user
-export const GET: ApiRouteHandlerOneParam<'userId'> = async (_req, { params }) => {
+export async function GET(
+  _req: NextRequest,
+  { params }: { params: { userId: string } }
+): Promise<Response> {
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
@@ -18,7 +21,7 @@ export const GET: ApiRouteHandlerOneParam<'userId'> = async (_req, { params }) =
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     // Extract userId from params safely
-    const userId = await getParams(params).then(p => p.userId);
+    const { userId } = params;
 
     // Check if user has permission to view this user's documents
     // Users can view their own documents, users with user_management permission can view any user's documents
@@ -49,10 +52,13 @@ export const GET: ApiRouteHandlerOneParam<'userId'> = async (_req, { params }) =
       { status: 500 }
     );
   }
-};
+}
 
 // POST /api/users/[userId]/documents - Upload a document for a user
-export const POST: ApiRouteHandlerOneParam<'userId'> = async (req, { params }) => {
+export async function POST(
+  req: NextRequest,
+  { params }: { params: { userId: string } }
+): Promise<Response> {
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
@@ -60,7 +66,7 @@ export const POST: ApiRouteHandlerOneParam<'userId'> = async (req, { params }) =
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     // Extract userId from params safely
-    const userId = await getParams(params).then(p => p.userId);
+    const { userId } = params;
 
     // Check if user has permission to upload documents for this user
     // Users can upload documents to their own profile, users with user_management permission can upload to any profile
@@ -129,10 +135,13 @@ export const POST: ApiRouteHandlerOneParam<'userId'> = async (req, { params }) =
       { status: 500 }
     );
   }
-};
+}
 
 // DELETE /api/users/[userId]/documents - Delete a document
-export const DELETE: ApiRouteHandlerOneParam<'userId'> = async (req, { params }) => {
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { userId: string } }
+): Promise<Response> {
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
@@ -140,7 +149,7 @@ export const DELETE: ApiRouteHandlerOneParam<'userId'> = async (req, { params })
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     // Extract userId from params safely
-    const userId = await getParams(params).then(p => p.userId);
+    const { userId } = params;
     const { searchParams } = new URL(req.url);
     const documentId = searchParams.get('documentId');
 
@@ -195,4 +204,4 @@ export const DELETE: ApiRouteHandlerOneParam<'userId'> = async (req, { params })
       { status: 500 }
     );
   }
-};
+}

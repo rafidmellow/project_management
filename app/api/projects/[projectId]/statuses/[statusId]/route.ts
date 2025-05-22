@@ -1,12 +1,15 @@
+import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { z } from 'zod';
 import prisma from '@/lib/prisma';
 import { authOptions } from '@/lib/auth-options';
-import { ApiRouteHandlerTwoParams, getParams } from '@/lib/api-route-types';
 
 // GET: Fetch a specific status
-export const GET: ApiRouteHandlerTwoParams<'projectId', 'statusId'> = async (req, { params }) => {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { projectId: string; statusId: string } }
+): Promise<Response> {
   try {
     const session = await getServerSession(authOptions);
 
@@ -15,8 +18,7 @@ export const GET: ApiRouteHandlerTwoParams<'projectId', 'statusId'> = async (req
     }
 
     // Extract params safely
-    const resolvedParams = await getParams(params);
-    const { projectId, statusId } = resolvedParams;
+    const { projectId, statusId } = params;
 
     // Check if project exists and user has access
     const project = await prisma.project.findUnique({
@@ -57,10 +59,13 @@ export const GET: ApiRouteHandlerTwoParams<'projectId', 'statusId'> = async (req
       { status: 500 }
     );
   }
-};
+}
 
 // PATCH: Update a status
-export const PATCH: ApiRouteHandlerTwoParams<'projectId', 'statusId'> = async (req, { params }) => {
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: { projectId: string; statusId: string } }
+): Promise<Response> {
   try {
     const session = await getServerSession(authOptions);
 
@@ -69,8 +74,7 @@ export const PATCH: ApiRouteHandlerTwoParams<'projectId', 'statusId'> = async (r
     }
 
     // Extract params safely
-    const resolvedParams = await getParams(params);
-    const { projectId, statusId } = resolvedParams;
+    const { projectId, statusId } = params;
 
     // Check if project exists and user has access
     const project = await prisma.project.findUnique({
@@ -182,13 +186,13 @@ export const PATCH: ApiRouteHandlerTwoParams<'projectId', 'statusId'> = async (r
       { status: 500 }
     );
   }
-};
+}
 
 // DELETE: Delete a status
-export const DELETE: ApiRouteHandlerTwoParams<'projectId', 'statusId'> = async (
-  req,
-  { params }
-) => {
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { projectId: string; statusId: string } }
+): Promise<Response> {
   try {
     const session = await getServerSession(authOptions);
     if (!session) {
@@ -196,8 +200,7 @@ export const DELETE: ApiRouteHandlerTwoParams<'projectId', 'statusId'> = async (
     }
 
     // Extract params safely
-    const resolvedParams = await getParams(params);
-    const { projectId, statusId } = resolvedParams;
+    const { projectId, statusId } = params;
 
     // Check if project exists and user has access
     const project = await prisma.project.findUnique({
@@ -334,4 +337,4 @@ export const DELETE: ApiRouteHandlerTwoParams<'projectId', 'statusId'> = async (
       { status: 500 }
     );
   }
-};
+}
