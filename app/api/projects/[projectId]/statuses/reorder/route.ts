@@ -5,15 +5,17 @@ import prisma from '@/lib/prisma';
 import { authOptions } from '@/lib/auth-options';
 
 // POST: Reorder statuses
-export async function POST(req: NextRequest, { params }: { params: { projectId: string } }) {
+export async function POST(
+  req: NextRequest,
+  { params }: { params: Promise<{ projectId: string }> }
+) {
+  const { projectId } = await params;
   try {
     const session = await getServerSession(authOptions);
 
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-
-    const { projectId } = params;
 
     // Check if project exists and user has access
     const project = await prisma.project.findUnique({

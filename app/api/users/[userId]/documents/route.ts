@@ -12,17 +12,15 @@ import { PermissionService } from '@/lib/permissions/unified-permission-service'
 // GET /api/users/[userId]/documents - Get documents for a specific user
 export async function GET(
   _req: NextRequest,
-  { params }: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ): Promise<Response> {
+  const { userId } = await params;
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    // Extract userId from params safely
-    const { userId } = params;
-
     // Check if user has permission to view this user's documents
     // Users can view their own documents, users with user_management permission can view any user's documents
     const isOwnProfile = session.user.id === userId;
@@ -57,17 +55,15 @@ export async function GET(
 // POST /api/users/[userId]/documents - Upload a document for a user
 export async function POST(
   req: NextRequest,
-  { params }: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ): Promise<Response> {
+  const { userId } = await params;
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    // Extract userId from params safely
-    const { userId } = params;
-
     // Check if user has permission to upload documents for this user
     // Users can upload documents to their own profile, users with user_management permission can upload to any profile
     const isOwnProfile = session.user.id === userId;
@@ -140,16 +136,15 @@ export async function POST(
 // DELETE /api/users/[userId]/documents - Delete a document
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ): Promise<Response> {
+  const { userId } = await params;
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    // Extract userId from params safely
-    const { userId } = params;
     const { searchParams } = new URL(req.url);
     const documentId = searchParams.get('documentId');
 

@@ -15,15 +15,14 @@ const createCommentSchema = z.object({
 // GET /api/tasks/[taskId]/comments - Get comments for a task
 export async function GET(
   _req: NextRequest,
-  { params }: { params: { taskId: string } }
+  { params }: { params: Promise<{ taskId: string }> }
 ): Promise<Response> {
+  const { taskId } = await params;
   try {
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-
-    const { taskId } = params;
 
     // Check permission
     const { hasPermission, error } = await checkTaskPermission(taskId, session, 'view');
@@ -60,15 +59,14 @@ export async function GET(
 // POST /api/tasks/[taskId]/comments - Add a comment to a task
 export async function POST(
   req: NextRequest,
-  { params }: { params: { taskId: string } }
+  { params }: { params: Promise<{ taskId: string }> }
 ): Promise<Response> {
+  const { taskId } = await params;
   try {
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-
-    const { taskId } = params;
 
     // Check permission
     const { hasPermission, error } = await checkTaskPermission(taskId, session, 'update');
@@ -133,15 +131,15 @@ export async function POST(
 // DELETE /api/tasks/[taskId]/comments?commentId=xxx - Delete a comment
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { taskId: string } }
+  { params }: { params: Promise<{ taskId: string }> }
 ): Promise<Response> {
+  const { taskId } = await params;
   try {
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const { taskId } = params;
     const { searchParams } = new URL(req.url);
     const commentId = searchParams.get('commentId');
 

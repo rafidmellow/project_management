@@ -8,16 +8,15 @@ import { authOptions } from '@/lib/auth-options';
 // GET: Fetch all statuses for a project
 export async function GET(
   _req: NextRequest,
-  { params }: { params: { projectId: string } }
+  { params }: { params: Promise<{ projectId: string }> }
 ): Promise<Response> {
+  const { projectId } = await params;
   try {
     const session = await getServerSession(authOptions);
 
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-
-    const { projectId } = params;
 
     // Check if project exists and user has access
     const project = await prisma.project.findUnique({
@@ -52,16 +51,15 @@ export async function GET(
 // POST: Create a new status for a project
 export async function POST(
   req: NextRequest,
-  { params }: { params: { projectId: string } }
+  { params }: { params: Promise<{ projectId: string }> }
 ): Promise<Response> {
+  const { projectId } = await params;
   try {
     const session = await getServerSession(authOptions);
 
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-
-    const { projectId } = params;
 
     // Check if project exists and user has access
     const project = await prisma.project.findUnique({

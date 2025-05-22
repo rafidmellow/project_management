@@ -12,16 +12,15 @@ import { toggleTaskCompletion } from '@/lib/utils/task-utils';
  */
 export async function POST(
   req: NextRequest,
-  { params }: { params: { taskId: string } }
+  { params }: { params: Promise<{ taskId: string }> }
 ): Promise<Response> {
+  const { taskId } = await params;
   try {
     const session = await getServerSession(authOptions);
 
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-
-    const { taskId } = params;
 
     // Check if user has permission to update the task
     const { hasPermission, error } = await checkTaskPermission(taskId, session, 'update');

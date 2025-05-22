@@ -8,17 +8,15 @@ import { authOptions } from '@/lib/auth-options';
 // GET: Fetch a specific status
 export async function GET(
   req: NextRequest,
-  { params }: { params: { projectId: string; statusId: string } }
+  { params }: { params: Promise<{ projectId: string; statusId: string }> }
 ): Promise<Response> {
+  const { projectId, statusId } = await params;
   try {
     const session = await getServerSession(authOptions);
 
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-
-    // Extract params safely
-    const { projectId, statusId } = params;
 
     // Check if project exists and user has access
     const project = await prisma.project.findUnique({
@@ -64,17 +62,15 @@ export async function GET(
 // PATCH: Update a status
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { projectId: string; statusId: string } }
+  { params }: { params: Promise<{ projectId: string; statusId: string }> }
 ): Promise<Response> {
+  const { projectId, statusId } = await params;
   try {
     const session = await getServerSession(authOptions);
 
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-
-    // Extract params safely
-    const { projectId, statusId } = params;
 
     // Check if project exists and user has access
     const project = await prisma.project.findUnique({
@@ -191,16 +187,14 @@ export async function PATCH(
 // DELETE: Delete a status
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { projectId: string; statusId: string } }
+  { params }: { params: Promise<{ projectId: string; statusId: string }> }
 ): Promise<Response> {
+  const { projectId, statusId } = await params;
   try {
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-
-    // Extract params safely
-    const { projectId, statusId } = params;
 
     // Check if project exists and user has access
     const project = await prisma.project.findUnique({

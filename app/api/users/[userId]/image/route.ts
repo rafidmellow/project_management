@@ -12,17 +12,15 @@ import { PermissionService } from '@/lib/permissions/unified-permission-service'
 // PUT /api/users/[userId]/image - Upload a profile image for a user
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ): Promise<Response> {
+  const { userId } = await params;
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-
-    // Extract userId from params safely
-    const { userId } = params;
 
     // Check if user has permission to upload profile image for this user
     // Users can upload profile image to their own profile, users with user_management permission can upload to any profile
