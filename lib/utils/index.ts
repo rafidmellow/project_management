@@ -9,10 +9,10 @@
 export * from './date';
 
 // Export other utilities
-export * from './cn';
-export * from './format-utils';
+// Re-export the core utility functions
+export * from '../utils';
+export * from '../format-utils';
 export * from './geo-utils';
 export * from './task-utils';
-export * from './validation-utils';
 export * from './profile-utils';
-export * from './logout-utils';
+export * from '../logout-utils';
