@@ -13,14 +13,14 @@ import { existsSync } from 'fs';
 // GET /api/tasks/[taskId]/attachments - Get attachments for a task
 export async function GET(
   _req: NextRequest,
-  { params }: { params: { taskId: string } }
+  { params }: { params: Promise<{ taskId: string }> }
 ): Promise<Response> {
+  const { taskId } = await params;
   try {
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    const { taskId } = params;
     // Check permission
     const { hasPermission, error } = await checkTaskPermission(taskId, session, 'view');
     if (!hasPermission) {
@@ -56,14 +56,14 @@ export async function GET(
 // POST /api/tasks/[taskId]/attachments - Upload an attachment to a task
 export async function POST(
   req: NextRequest,
-  { params }: { params: { taskId: string } }
+  { params }: { params: Promise<{ taskId: string }> }
 ): Promise<Response> {
+  const { taskId } = await params;
   try {
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    const { taskId } = params;
     // Check permission
     const { hasPermission, error } = await checkTaskPermission(taskId, session, 'update');
     if (!hasPermission) {
@@ -149,14 +149,14 @@ export async function POST(
 // DELETE /api/tasks/[taskId]/attachments?attachmentId=xxx - Delete an attachment
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { taskId: string } }
+  { params }: { params: Promise<{ taskId: string }> }
 ): Promise<Response> {
+  const { taskId } = await params;
   try {
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    const { taskId } = params;
     const { searchParams } = new URL(req.url);
     const attachmentId = searchParams.get('attachmentId');
 

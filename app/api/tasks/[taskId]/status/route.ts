@@ -10,15 +10,13 @@ import { updateTaskStatus } from '@/lib/utils/task-utils';
 
 // PATCH: Update a task's status
 export async function PATCH(req: NextRequest, { params }: { params: Promise<{ taskId: string }> }) {
+  const { taskId } = await params;
   try {
     const session = await getServerSession(authOptions);
 
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-
-    const resolvedParams = await (params instanceof Promise ? params : Promise.resolve(params));
-  const taskId = resolvedParams.taskId;
 
     // Check if task exists
     const task = await prisma.task.findUnique({

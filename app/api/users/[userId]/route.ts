@@ -10,8 +10,9 @@ import { PermissionService } from '@/lib/permissions/unified-permission-service'
 // GET /api/users/[userId] - Get a specific user by ID
 export async function GET(
   req: NextRequest,
-  { params }: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ): Promise<Response> {
+  const { userId } = await params;
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
@@ -19,8 +20,7 @@ export async function GET(
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Extract userId from params safely
-    const { userId } = params;
+    // userId already extracted above
     const isProfile = req.nextUrl.searchParams.get('profile') === 'true';
 
     // Check if user has permission to view this user
@@ -420,15 +420,15 @@ export async function GET(
 // PATCH /api/users/[userId] - Update a user
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ): Promise<Response> {
+  const { userId } = await params;
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    } // Extract userId from params safely
-    const { userId } = params;
+    }
 
     // Check if user has permission to update this user
     // Users can update their own profile, users with user_management permission can update any profile
@@ -480,8 +480,9 @@ export async function PATCH(
 // DELETE /api/users/[userId] - Delete a user
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ): Promise<Response> {
+  const { userId } = await params;
   console.log('DELETE /api/users/[userId] - Request received', { params });
 
   try {
@@ -498,8 +499,7 @@ export async function DELETE(
       userRole: session.user.role,
     });
 
-    // Extract userId from params safely
-    const { userId } = params;
+    // userId already extracted above
     console.log('DELETE /api/users/[userId] - Target user ID:', userId);
 
     // Check if user has permission to delete users
