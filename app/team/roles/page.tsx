@@ -51,8 +51,8 @@ import {
 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 
-// Use centralized role definitions
-const ROLES = [
+// Default role definitions used as a fallback
+const DEFAULT_ROLES = [
   {
     id: 'user',
     name: SYSTEM_ROLES.user.name,
@@ -83,6 +83,7 @@ export default function RoleManagementPage() {
   const [selectedUser, setSelectedUser] = useState<any>(null);
   const [selectedRole, setSelectedRole] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [roles, setRoles] = useState(DEFAULT_ROLES);
 
   // Check if user has permission to manage roles
   useEffect(() => {
@@ -148,6 +149,32 @@ export default function RoleManagementPage() {
       fetchUsers();
     }
   }, [session, toast]);
+
+  // Fetch available roles
+  useEffect(() => {
+    const fetchRoles = async () => {
+      try {
+        const response = await fetch('/api/roles');
+        if (!response.ok) throw new Error('Failed to fetch roles');
+        const data = await response.json();
+
+        if (data && data.roles && Array.isArray(data.roles)) {
+          setRoles(data.roles);
+        } else if (Array.isArray(data)) {
+          setRoles(data);
+        } else {
+          setRoles(DEFAULT_ROLES);
+        }
+      } catch (error) {
+        console.error('Error fetching roles:', error);
+        setRoles(DEFAULT_ROLES);
+      }
+    };
+
+    if (session) {
+      fetchRoles();
+    }
+  }, [session]);
 
   // Filter users based on search query
   const filteredUsers = Array.isArray(users)
@@ -344,7 +371,7 @@ export default function RoleManagementPage() {
                 <SelectValue placeholder="Select a role" />
               </SelectTrigger>
               <SelectContent>
-                {ROLES.map(role => (
+                {roles.map(role => (
                   <SelectItem key={role.id} value={role.id}>
                     <div className="flex items-center">
                       <div className={`h-2 w-2 rounded-full ${role.color} mr-2`}></div>
@@ -355,7 +382,7 @@ export default function RoleManagementPage() {
               </SelectContent>
             </Select>
             <p className="text-sm text-muted-foreground mt-2">
-              {ROLES.find(r => r.id === selectedRole)?.description ||
+              {roles.find(r => r.id === selectedRole)?.description ||
                 'Select a role to see its description'}
             </p>
           </div>
