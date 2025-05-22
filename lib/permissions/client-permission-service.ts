@@ -27,47 +27,6 @@ export class ClientPermissionService {
   }
 
   /**
-   * Check if a user has a specific permission based on their role
-   *
-   * @deprecated Use hasPermissionById instead for better security and flexibility
-   * @param role The user's role
-   * @param permission The permission to check
-   * @returns A promise that resolves to true if the user has the permission, false otherwise
-   */
-  static async hasPermission(role: string, permission: string): Promise<boolean> {
-    try {
-      // Check cache first
-      const cacheKey = `role:${role}:${permission}`;
-      const now = Date.now();
-
-      // If cache is valid and has this permission check, return it
-      if (now - this.cacheTimestamp < this.CACHE_TTL && cacheKey in this.permissionCache) {
-        return this.permissionCache[cacheKey];
-      }
-
-      // Fetch from API
-      const response = await fetch(
-        `/api/roles/check-permission?role=${encodeURIComponent(role)}&permission=${encodeURIComponent(permission)}`
-      );
-
-      if (!response.ok) {
-        throw new Error(`Failed to check permission: ${response.status} ${response.statusText}`);
-      }
-
-      const data = await response.json();
-
-      // Update cache
-      this.permissionCache[cacheKey] = data.hasPermission;
-      this.cacheTimestamp = now;
-
-      return data.hasPermission;
-    } catch (error) {
-      console.error(`Error checking permission ${permission} for role ${role}:`, error);
-      return false;
-    }
-  }
-
-  /**
    * Check if a user has a specific permission based on their user ID
    * This is the preferred method for checking permissions
    *
@@ -441,46 +400,6 @@ export class ClientPermissionService {
     return {
       hasPermission: false,
       error: 'Checking permissions...',
-    };
-  }
-
-  /**
-   * Legacy version of checkOwnerOrPermission that uses role
-   *
-   * @deprecated Use checkOwnerOrPermission instead
-   */
-  static async checkOwnerOrPermissionWithRole(
-    userId: string | undefined,
-    userRole: string | undefined,
-    resourceUserId: string,
-    requiredPermission: string
-  ): Promise<{ hasPermission: boolean; error?: string }> {
-    // If no user ID, no permission
-    if (!userId) {
-      return { hasPermission: false, error: 'Unauthorized' };
-    }
-
-    // Check if user is the owner of the resource
-    const isOwner = userId === resourceUserId;
-
-    // If user is the owner, they have access
-    if (isOwner) {
-      return { hasPermission: true };
-    }
-
-    // Otherwise, check if they have the required permission
-    if (userRole) {
-      const hasPermission = await this.hasPermission(userRole, requiredPermission);
-      return {
-        hasPermission,
-        error: hasPermission ? undefined : `Forbidden: ${requiredPermission} permission required`,
-      };
-    }
-
-    // If no role is provided, deny access
-    return {
-      hasPermission: false,
-      error: 'Forbidden: Insufficient permissions',
     };
   }
 }

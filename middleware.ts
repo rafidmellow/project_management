@@ -11,7 +11,6 @@ const PUBLIC_PATHS = [
   '/api/users', // Allow access to user creation for registration
   '/api/auth-status',
   '/api/permissions/matrix', // Allow access to permission matrix for middleware
-  '/api/roles/check-permission', // Allow access to permission checks
   '/_next',
   '/favicon.ico',
   '/images',
@@ -77,7 +76,7 @@ export async function middleware(request: NextRequest) {
       // Special case for user-specific API routes
       if (protectedPath === '/api/users') {
         // Allow users to access their own data
-        const userIdInPath = pathname.match(/\/api\/users\/([^\/]+)/)?.[1];
+        const userIdInPath = pathname.match(/\/api\/users\/([^/]+)/)?.[1];
         if (userIdInPath && userIdInPath === userId) {
           return NextResponse.next();
         }
