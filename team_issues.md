@@ -122,7 +122,7 @@ Permission System: Each menu item is tied to specific permissions that determine
 User Management: The menu provides access to user profiles, team member management, and user administration.
 Project Management: Team members are associated with projects, and the team management interfaces allow adding/removing members from projects.
 Role-Based Access Control: The menu provides access to role and permission management interfaces.
-The permission system is implemented using a database-backed approach with Permission, Role, and RolePermission models. The PermissionService provides methods for checking permissions, and the UI components use hooks like useHasPermission to conditionally render elements based on user permissions.
+The permission system is implemented using a database-backed approach with Permission, Role, and RolePermission models. The **Unified Permission Service** provides methods for checking permissions, and the UI components use hooks like `useHasPermission` to conditionally render elements based on user permissions.
 
 4. Potential Improvements
 Based on your preferences for clean, responsive design and improved functionality:
