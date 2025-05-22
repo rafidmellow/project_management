@@ -1,5 +1,8 @@
 'use client';
 
+import type { DragStartEvent, DragEndEvent, DragOverEvent } from '@dnd-kit/core';
+import type { TaskDragData } from '@/lib/dnd-utils';
+
 import type { Column, Task } from '@/types';
 import { ChevronRight, Plus, Check, X } from 'lucide-react';
 import { useState } from 'react';
