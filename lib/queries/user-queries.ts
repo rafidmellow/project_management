@@ -178,13 +178,13 @@ export async function getUserById(id: string, includeRelations: boolean = false)
       select: {
         id: true,
         title: true,
-        status: true,
+        statuses: true,
         startDate: true,
         endDate: true,
         createdAt: true,
       },
     };
-    // Get tasks directly assigned to the user (via assignedToId)
+    // Get tasks assigned to the user
     select.tasks = {
       select: {
         id: true,
@@ -320,7 +320,7 @@ export async function getUserProfile(id: string) {
     select: {
       id: true,
       title: true,
-      status: true,
+      statuses: true,
       startDate: true,
       endDate: true,
       createdAt: true,
@@ -361,7 +361,11 @@ export async function getUserStats(userId: string) {
   // Get task count (both direct assignments and via TaskAssignee table)
   const directTaskCount = await prisma.task.count({
     where: {
-      assignedToId: userId,
+      assignees: {
+        some: {
+          userId,
+        },
+      },
     },
   });
 
