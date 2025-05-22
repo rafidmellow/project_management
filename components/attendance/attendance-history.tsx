@@ -15,7 +15,7 @@ import {
   MoreHorizontal,
 } from 'lucide-react';
 import { startOfWeek, endOfWeek } from 'date-fns';
-import { getDeviceInfo } from '@/lib/geo-utils';
+import { getDeviceInfo } from '@/lib/utils/geo-utils';
 import { LocationMap } from '@/components/attendance/location-map';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';

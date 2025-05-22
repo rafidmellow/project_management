@@ -23,7 +23,7 @@ import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { formatDistanceToNow } from 'date-fns';
 import { useToast } from '@/components/ui/use-toast';
-import { getDeviceInfo } from '@/lib/geo-utils';
+import { getDeviceInfo } from '@/lib/utils/geo-utils';
 import { LocationMap } from '@/components/attendance/location-map';
 import {
   registerServiceWorker,

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth-options';
 import prisma from '@/lib/prisma';
-import { getLocationName } from '@/lib/geo-utils';
+import { getLocationName } from '@/lib/utils/geo-utils';
 import {
   differenceInHours,
   isAfter,
