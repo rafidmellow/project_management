@@ -14,7 +14,7 @@ import { Badge } from '@/components/ui/badge';
 import { Spinner } from '@/components/ui/spinner';
 import { useToast } from '@/components/ui/use-toast';
 import { Clock, Search, Filter, MoreHorizontal, Edit, CheckCircle2, Trash } from 'lucide-react';
-import { useProjects } from '@/hooks/use-projects';
+import { useProjects } from '@/hooks/use-data';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
