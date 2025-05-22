@@ -12,7 +12,7 @@ export * from './task';
 export * from './attendance';
 export * from './permission';
 export * from './document';
-export * from './activity';
+export type { Activity, ActivityWithRelations, CreateActivityDTO } from './activity';
 export * from './dashboard';
 
 // Re-export types from infrastructure files
