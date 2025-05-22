@@ -184,26 +184,13 @@ export async function getUserById(id: string, includeRelations: boolean = false)
         createdAt: true,
       },
     };
-    // Get tasks assigned to the user
-    select.tasks = {
-      select: {
-        id: true,
-        title: true,
-        priority: true,
-        dueDate: true,
-        project: {
-          select: {
-            id: true,
-            title: true,
-          },
-        },
-      },
-    };
+    // Note: tasks field doesn't exist on User model, we'll use taskAssignments instead
 
     // Get tasks assigned via TaskAssignee table (multiple assignees)
     select.taskAssignments = {
       select: {
         id: true,
+        taskId: true,
         task: {
           select: {
             id: true,
@@ -291,14 +278,14 @@ export async function getUserProfile(id: string) {
   // Calculate user stats
   const stats = await getUserStats(id);
 
-  // Combine tasks from both direct assignments and TaskAssignee table
-  const allTasks = [...(user.tasks || [])];
+  // Get tasks from TaskAssignee table only (since tasks field doesn't exist on User)
+  const allTasks: any[] = [];
 
   // Add tasks from taskAssignments if they exist
   if (user.taskAssignments && Array.isArray(user.taskAssignments)) {
     const tasksFromAssignments = user.taskAssignments
-      .filter(assignment => assignment.task) // Filter out any null tasks
-      .map(assignment => assignment.task);
+      .filter((assignment: any) => assignment.task) // Filter out any null tasks
+      .map((assignment: any) => assignment.task);
 
     // Add tasks that aren't already in the allTasks array
     for (const task of tasksFromAssignments) {
@@ -409,7 +396,16 @@ export async function createUser(data: UserCreateInput) {
 
   // Hash password if provided
   const userToCreate: Prisma.UserCreateInput = {
-    ...userData,
+    name: userData.name,
+    email: userData.email,
+    image: userData.image,
+    role: userData.role,
+    bio: userData.bio,
+    jobTitle: userData.jobTitle,
+    department: userData.department,
+    location: userData.location,
+    phone: userData.phone,
+    skills: Array.isArray(userData.skills) ? userData.skills.join(',') : userData.skills,
   };
 
   if (password) {
@@ -437,7 +433,16 @@ export async function updateUser(id: string, data: UserUpdateInput) {
 
   // Create update object
   const userToUpdate: Prisma.UserUpdateInput = {
-    ...userData,
+    name: userData.name,
+    email: userData.email,
+    image: userData.image,
+    role: userData.role,
+    bio: userData.bio,
+    jobTitle: userData.jobTitle,
+    department: userData.department,
+    location: userData.location,
+    phone: userData.phone,
+    skills: Array.isArray(userData.skills) ? userData.skills.join(',') : userData.skills,
   };
 
   // Hash password if provided

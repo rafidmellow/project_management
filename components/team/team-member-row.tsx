@@ -52,7 +52,7 @@ export const TeamMemberRow = memo(function TeamMemberRow({
           <Avatar className="h-8 w-8 border border-border">
             <AvatarImage src={member.user?.image || ''} alt={member.user?.name || 'Team member'} />
             <AvatarFallback className="bg-primary/10 text-primary font-medium text-xs">
-              {getUserInitials(member.user?.name)}
+              {getUserInitials(member.user?.name || null)}
             </AvatarFallback>
           </Avatar>
           <div>

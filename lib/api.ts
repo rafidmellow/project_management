@@ -243,7 +243,12 @@ export const projectStatusApi = {
     // In a real implementation, we might want to fetch from all projects
     // and combine the results, but for simplicity we'll use the first one
     const firstProject = projects[0];
-    return this.getProjectStatusesByProjectId(firstProject.id);
+    if (!firstProject || !firstProject.id) {
+      console.error('No valid projects found to fetch statuses from');
+      return { statuses: [] };
+    }
+    const projectId = firstProject.id as string;
+    return fetchAPI(`/api/projects/${projectId}/statuses`);
   },
 
   // Get statuses for a specific project

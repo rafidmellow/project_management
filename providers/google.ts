@@ -1,4 +1,4 @@
-import type { OAuthConfig } from 'next-auth/providers';
+import type { OAuthConfig } from 'next-auth/providers/index';
 import { GoogleProfile } from '@/types/oauth';
 
 // Only create the Google provider if credentials are available
@@ -18,6 +18,7 @@ export const googleProvider: OAuthConfig<GoogleProfile> = {
       name: profile.name,
       email: profile.email,
       image: profile.picture,
+      role: 'user', // Default role for Google OAuth users
     };
   },
   clientId: process.env.GOOGLE_CLIENT_ID || '',

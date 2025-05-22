@@ -59,6 +59,7 @@ export interface UserSummary {
   email: string;
   image?: string | null;
   role?: string;
+  active?: boolean;
 }
 
 /**
@@ -87,7 +88,9 @@ export interface CreateUserDTO {
 /**
  * User Update DTO
  */
-export interface UpdateUserDTO extends Partial<CreateUserDTO> {}
+export interface UpdateUserDTO extends Partial<CreateUserDTO> {
+  id?: string; // Allow ID for update operations
+}
 
 /**
  * User Filter Options
@@ -106,6 +109,19 @@ export interface UserFilterOptions {
  */
 export interface UserResponse {
   user: UserWithProfile;
+}
+
+/**
+ * Pagination interface for consistent pagination across the app
+ */
+export interface Pagination {
+  total: number;
+  totalCount: number; // Alias for total
+  page: number;
+  limit: number;
+  pageSize: number; // Alias for limit
+  totalPages: number;
+  pageCount: number; // Alias for totalPages
 }
 
 /**

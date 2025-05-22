@@ -60,7 +60,7 @@ export async function addToSyncQueue(
       ...record,
       id: generateId(),
       retryCount: 0,
-      lastAttempt: null,
+      lastAttempt: undefined,
     };
 
     return new Promise((resolve, reject) => {

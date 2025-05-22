@@ -110,7 +110,7 @@ export function KanbanBoard({
     if (active.data.current?.type === 'task') {
       const task = active.data.current.task as Task;
       setActiveTaskId(active.id);
-      setActiveStatusId(task.statusId);
+      setActiveStatusId(task.statusId || null);
 
       // Clone the tasks array for optimistic updates
       setClonedTasks([...tasks]);
@@ -149,7 +149,7 @@ export function KanbanBoard({
 
       // If dragging over a task in a different status
       if (activeTask.statusId !== overTask.statusId) {
-        setActiveStatusId(overTask.statusId);
+        setActiveStatusId(overTask.statusId || null);
 
         // Update the cloned tasks for optimistic UI updates
         setClonedTasks(prev => {
@@ -242,12 +242,12 @@ export function KanbanBoard({
         // If dropping onto a task in a different status
         if (activeTaskData.statusId !== overTaskData.statusId) {
           // Moving to different status column AND positioning relative to a specific task
-          await moveTask(activeTaskData.id, overTaskData.statusId, overTaskData.id);
+          await moveTask(activeTaskData.id, overTaskData.statusId || '', overTaskData.id);
         }
         // If dropping onto a task in the same status (reordering)
         else if (activeTaskData.id !== overTaskData.id) {
           // Only reordering within the same status
-          await moveTask(activeTaskData.id, activeTaskData.statusId, overTaskData.id);
+          await moveTask(activeTaskData.id, activeTaskData.statusId || '', overTaskData.id);
         }
       }
     } catch (error) {

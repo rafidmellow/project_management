@@ -8,9 +8,9 @@ import type { Task, Column } from '@/types';
  * Enhanced keyboard coordinates getter with custom behavior
  * Extends the default implementation with additional keyboard shortcuts
  */
-export const sortableKeyboardCoordinates: KeyboardCoordinateGetter = (event, { context }) => {
+export const sortableKeyboardCoordinates: KeyboardCoordinateGetter = (event, args) => {
   // Use the default implementation as a base
-  const coordinates = defaultSortableKeyboardCoordinates(event, { context });
+  const coordinates = defaultSortableKeyboardCoordinates(event, args);
 
   // Add custom keyboard shortcuts or behavior here
   // For example, we could add support for Home/End keys
@@ -183,7 +183,7 @@ export function moveTaskBetweenColumns(
   const overIndex = targetColumn.tasks.findIndex(t => t.id === overTaskId);
 
   const targetTasks = [...targetColumn.tasks];
-  targetTasks.splice(overIndex, 0, { ...task, status: targetColumn.id });
+  targetTasks.splice(overIndex, 0, { ...task, statusId: targetColumn.id });
 
   return {
     sourceColumn: { ...sourceColumn, tasks: sourceTasks },

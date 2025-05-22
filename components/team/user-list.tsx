@@ -45,20 +45,13 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination';
-import { UserSummary } from '@/types/user';
-
-interface Pagination {
-  totalCount: number;
-  page: number;
-  pageSize: number;
-  pageCount: number;
-}
+import { UserSummary, Pagination as PaginationType } from '@/types/user';
 
 interface UserListProps {
   users: UserSummary[];
   viewMode?: 'grid' | 'list';
   isLoading?: boolean;
-  pagination?: Pagination;
+  pagination?: PaginationType;
   currentPage?: number;
   onPageChange?: (page: number) => void;
   onUserDeleted?: () => void;
@@ -204,7 +197,7 @@ export function UserList({
           title: 'Error',
           description: (
             <div className="space-y-1">
-              {lines.map((line, index) => (
+              {lines.map((line: string, index: number) => (
                 <div key={index}>{line}</div>
               ))}
             </div>
@@ -263,7 +256,7 @@ export function UserList({
                           <AvatarImage src={user.image} alt={user.name || 'User'} />
                         ) : null}
                         <AvatarFallback className="bg-primary/10 text-primary text-xs">
-                          {getUserInitials(user.name)}
+                          {getUserInitials(user.name || null)}
                         </AvatarFallback>
                       </Avatar>
                       <Link
@@ -344,7 +337,7 @@ export function UserList({
                     <Avatar className="h-16 w-16 mb-2">
                       <AvatarImage src={user.image || ''} alt={user.name || ''} />
                       <AvatarFallback className="text-lg">
-                        {getUserInitials(user.name)}
+                        {getUserInitials(user.name || null)}
                       </AvatarFallback>
                     </Avatar>
                     <h3 className="font-medium text-lg">{user.name || 'Unknown'}</h3>

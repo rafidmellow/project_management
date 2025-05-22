@@ -154,7 +154,7 @@ export default function ProjectPage() {
       // Check if we have team members data
       if (data.teamMembers && Array.isArray(data.teamMembers)) {
         // Extract user data from team members
-        const usersList = data.teamMembers.map(member => member.user).filter(Boolean);
+        const usersList = data.teamMembers.map((member: any) => member.user).filter(Boolean);
         console.log('Fetched users:', usersList.length);
         setUsers(usersList);
       } else {
@@ -278,11 +278,11 @@ export default function ProjectPage() {
 
       // Refresh the team members list
       await fetchUsers();
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Error removing team member:', error);
       toast({
         title: 'Error',
-        description: error.message || 'Failed to remove team member',
+        description: (error as Error)?.message || 'Failed to remove team member',
         variant: 'destructive',
       });
     } finally {

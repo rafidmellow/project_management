@@ -125,7 +125,7 @@ export default function TaskDetailPage() {
   // Initialize newTask with project ID when task is loaded
   useEffect(() => {
     if (task) {
-      setNewTask(prev => ({
+      setNewTask((prev: any) => ({
         ...prev,
         projectId: task.projectId,
         parentId: task.id,
@@ -217,7 +217,7 @@ export default function TaskDetailPage() {
   };
 
   // Format date for display
-  const formatDate = (dateString?: string | null) => {
+  const formatDate = (dateString?: string | Date | null) => {
     if (!dateString) return null;
     return format(new Date(dateString), 'MMM d, yyyy');
   };
@@ -884,7 +884,7 @@ export default function TaskDetailPage() {
                       <SubtaskList
                         parentTaskId={task.id}
                         projectId={task.projectId}
-                        subtasks={task.subtasks}
+                        subtasks={task.subtasks as any}
                         onSubtaskChange={handleSubtaskChange}
                       />
                     </div>

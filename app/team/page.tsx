@@ -286,7 +286,7 @@ export default function TeamPage() {
             {viewMode === 'grid' ? (
               <UserGrid users={users} onDelete={confirmDelete} />
             ) : (
-              <UserList users={users} onDelete={confirmDelete} />
+              <UserList users={users} onUserDeleted={() => mutate()} />
             )}
 
             {pagination && pagination.totalPages > 1 && (

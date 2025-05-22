@@ -106,7 +106,7 @@ export function useAuthSession() {
       }
     }
 
-    return status === 'authenticated';
+    return false;
   };
 
   return { session, status, checkSession };

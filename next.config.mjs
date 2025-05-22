@@ -20,9 +20,8 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   typescript: {
-    // Set to false once you've fixed all TypeScript errors
-    // For production, you should fix TypeScript errors and set this to false
-    ignoreBuildErrors: true
+    // TypeScript errors have been resolved - enabling strict checking for production
+    ignoreBuildErrors: false
   },
   images: {
     unoptimized: false,

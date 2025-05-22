@@ -39,9 +39,9 @@ export interface ActivityWithRelations extends Activity {
 }
 
 /**
- * Activity where input for filtering
+ * Activity filter input for custom filtering (renamed to avoid conflict with Prisma)
  */
-export interface ActivityWhereInput {
+export interface ActivityFilterInput {
   userId?: string;
   projectId?: string;
   taskId?: string;

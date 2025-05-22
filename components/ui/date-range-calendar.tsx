@@ -11,7 +11,7 @@ import { buttonVariants } from '@/components/ui/button';
 // Create a custom type that extends DayPicker props but allows for DateRange
 export type DateRangeCalendarProps = Omit<
   React.ComponentProps<typeof DayPicker>,
-  'selected' | 'onSelect'
+  'selected' | 'onSelect' | 'mode'
 > & {
   selected?: DateRange | undefined;
   onSelect?: (date: DateRange | undefined) => void;
@@ -34,6 +34,7 @@ function DateRangeCalendar({
 
   return (
     <DayPicker
+      mode="range"
       showOutsideDays={showOutsideDays}
       className={cn('p-3', className)}
       classNames={{
@@ -74,7 +75,6 @@ function DateRangeCalendar({
       }}
       selected={selected}
       onSelect={handleSelect}
-      mode="range"
       {...props}
     />
   );

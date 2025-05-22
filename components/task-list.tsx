@@ -128,7 +128,7 @@ export function TaskList() {
               </TableCell>
             </TableRow>
           ) : (
-            tasks.map(task => (
+            tasks.map((task: any) => (
               <TableRow key={task.id}>
                 <TableCell>
                   <Checkbox
@@ -165,7 +165,7 @@ export function TaskList() {
                         <AvatarFallback>
                           {task.assignedTo?.name
                             ?.split(' ')
-                            .map(n => n[0])
+                            .map((n: string) => n[0])
                             .join('') || '?'}
                         </AvatarFallback>
                       </Avatar>

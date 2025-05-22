@@ -29,8 +29,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ ta
         project: {
           include: {
             teamMembers: {
-              where: { userId: session.user.id },
-              select: { id: true },
+              select: { id: true, userId: true },
             },
           },
         },
@@ -42,10 +41,10 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ ta
     }
 
     // Check if user has permission to update the task
-    const isTeamMember = task.project.teamMembers.some(tm => tm.userId === session.user.id);
+    const isTeamMember = task.project.teamMembers.some(tm => tm.userId === session.user?.id);
     const { PermissionService } = await import('@/lib/permissions/unified-permission-service');
     const hasTaskManagementPermission = await PermissionService.hasPermissionById(
-      session.user.id,
+      session.user?.id || '',
       'task_management'
     );
 
@@ -106,7 +105,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ ta
         entityType: 'task',
         entityId: taskId,
         description: `Updated time spent on task "${task.title}" to ${timeSpent} hours`,
-        userId: session.user.id,
+        userId: session.user?.id || '',
         projectId: task.projectId,
         taskId,
       },

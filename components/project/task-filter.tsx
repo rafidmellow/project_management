@@ -54,7 +54,10 @@ export function TaskFilterNew() {
   };
 
   const handlePriorityChange = (value: string) => {
-    setFilters({ ...filters, priority: value === 'all' ? null : value });
+    setFilters({
+      ...filters,
+      priority: value === 'all' ? null : (value as 'low' | 'medium' | 'high')
+    });
   };
 
   const handleCompletedChange = (value: string) => {

@@ -1,6 +1,10 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "target": "ES6",
     "skipLibCheck": true,
@@ -14,18 +18,34 @@
     "jsx": "preserve",
     "incremental": true,
     "noImplicitAny": true /* Enforce explicit types */,
-    "typeRoots": ["./node_modules/@types", "./types" /* Include our custom types directory */],
+    "typeRoots": [
+      "./node_modules/@types",
+      "./types" /* Include our custom types directory */
+    ],
     "plugins": [
       {
         "name": "next"
       }
     ],
     "paths": {
-      "@/*": ["./*"],
-      "@prisma/client": ["./prisma/generated/client"],
-      "@prisma/client/edge": ["./prisma/generated/client/edge"]
+      "@/*": [
+        "./*"
+      ],
+      "@prisma/client": [
+        "./prisma/generated/client"
+      ],
+      "@prisma/client/edge": [
+        "./prisma/generated/client/edge"
+      ]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "next-env.d.ts",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

@@ -51,7 +51,7 @@ export function TaskCreateModal({
 }: TaskCreateModalProps) {
   const router = useRouter();
   const { projects } = useProjects(1, 100);
-  const { users } = useUsers('', 100);
+  const { users } = useUsers({ limit: 100 });
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [parentTask, setParentTask] = useState<any>(null);
@@ -190,7 +190,7 @@ export function TaskCreateModal({
                 <SelectValue placeholder="Select a project" />
               </SelectTrigger>
               <SelectContent>
-                {projects.map(project => (
+                {projects.map((project: any) => (
                   <SelectItem key={project.id} value={project.id}>
                     {project.title}
                   </SelectItem>
@@ -211,7 +211,7 @@ export function TaskCreateModal({
                 label: user.name || user.email,
                 value: user.id,
               }))}
-              selected={form.watch('assigneeIds')}
+              selected={form.watch('assigneeIds') || []}
               onChange={value => form.setValue('assigneeIds', value)}
               placeholder="Select team members..."
             />
@@ -223,7 +223,7 @@ export function TaskCreateModal({
           <div className="grid gap-2">
             <Label htmlFor="dueDate">Due Date</Label>
             <DatePicker
-              onSelect={date => form.setValue('dueDate', date)}
+              onSelect={date => form.setValue('dueDate', date ? date.toISOString() : null)}
               selected={form.watch('dueDate')}
             />
           </div>
@@ -231,7 +231,7 @@ export function TaskCreateModal({
           <div className="grid gap-2">
             <Label htmlFor="priority">Priority</Label>
             <Select
-              onValueChange={value => form.setValue('priority', value)}
+              onValueChange={value => form.setValue('priority', value as 'low' | 'medium' | 'high')}
               value={form.watch('priority')}
             >
               <SelectTrigger>

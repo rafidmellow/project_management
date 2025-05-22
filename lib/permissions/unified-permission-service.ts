@@ -21,7 +21,7 @@ export class PermissionService {
   // Cache for permission checks to reduce database queries
   private static permissionCache: Record<string, boolean> = {};
   private static permissionListCache: Record<string, string[]> = {};
-  private static roleCache: Record<string, UiPermission[] | RoleCacheEntry> = {};
+  private static roleCache: Record<string, any> = {};
   private static cacheTimestamp: number = 0;
   private static readonly CACHE_TTL = 5 * 60 * 1000; // 5 minutes in milliseconds
 
@@ -252,7 +252,10 @@ export class PermissionService {
 
       // If cache is valid and has roles, return them
       if (now - this.cacheTimestamp < this.CACHE_TTL && 'roles' in this.roleCache) {
-        return this.roleCache['roles'];
+        const cachedRoles = this.roleCache['roles'];
+        if (Array.isArray(cachedRoles)) {
+          return cachedRoles;
+        }
       }
 
       // Get all roles from the database
@@ -292,7 +295,10 @@ export class PermissionService {
 
       // If cache is valid and has permissions, return them
       if (now - this.cacheTimestamp < this.CACHE_TTL && 'permissions' in this.roleCache) {
-        return this.roleCache['permissions'];
+        const cachedPermissions = this.roleCache['permissions'];
+        if (Array.isArray(cachedPermissions)) {
+          return cachedPermissions;
+        }
       }
 
       // Get all permissions from the database

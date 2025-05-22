@@ -60,7 +60,7 @@ export function UserCard({ user, onDelete }: UserCardProps) {
 
   // Get role badge variant
   const getRoleBadgeVariant = () => {
-    switch (user.role.toLowerCase()) {
+    switch (user.role?.toLowerCase()) {
       case 'admin':
         return 'destructive';
       case 'manager':

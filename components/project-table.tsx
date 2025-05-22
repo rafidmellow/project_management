@@ -26,7 +26,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { projectApi } from '@/lib/api';
-import { Project, ProjectWithRelations } from '@/types/project';
+import { Project, ProjectWithRelations, ProjectStatus } from '@/types/project';
 
 export function ProjectTable() {
   const [page, setPage] = useState(1);
@@ -144,7 +144,7 @@ export function ProjectTable() {
               </TableCell>
             </TableRow>
           ) : (
-            projects.map(project => {
+            projects.map((project: any) => {
               const progress = calculateProgress(project);
 
               return (

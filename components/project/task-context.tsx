@@ -304,13 +304,21 @@ export function TaskProvider({
       // If just reordering within the same status
       else if (targetTaskId) {
         // Handle reordering within the same status
-        await taskApi.reorderTask(
-          taskId,
-          null, // newParentId
-          null, // oldParentId
-          targetTaskId,
-          true // isSameParentReorder - true since we're not changing status
-        );
+        const response = await fetch('/api/tasks/reorder', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            taskId,
+            newParentId: null,
+            oldParentId: null,
+            targetTaskId,
+            isSameParentReorder: true
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to reorder task');
+        }
       }
 
       // Show appropriate toast message

@@ -211,7 +211,7 @@ export function AttendanceHistory() {
           <select
             className="h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 flex-1 sm:flex-none"
             value={groupBy || ''}
-            onChange={e => setGroupBy(e.target.value || null)}
+            onChange={e => setGroupBy((e.target.value || null) as 'month' | 'week' | 'day' | null)}
           >
             <option value="">None</option>
             <option value="day">Day</option>

@@ -79,8 +79,8 @@ export default function ProjectSettingsPage() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleDateChange = (field: string, value: Date | null) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+  const handleDateChange = (field: string, value: Date | undefined) => {
+    setFormData(prev => ({ ...prev, [field]: value || null }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -210,7 +210,6 @@ export default function ProjectSettingsPage() {
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0">
                         <Calendar
-                          mode="single"
                           selected={formData.startDate}
                           onSelect={date => handleDateChange('startDate', date)}
                           initialFocus
@@ -240,7 +239,6 @@ export default function ProjectSettingsPage() {
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0">
                         <Calendar
-                          mode="single"
                           selected={formData.endDate}
                           onSelect={date => handleDateChange('endDate', date)}
                           initialFocus

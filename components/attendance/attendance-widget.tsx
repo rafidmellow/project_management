@@ -171,10 +171,10 @@ export function AttendanceWidget() {
           });
 
           // Count different result types
-          const successCount = data.results.filter((r: any) => r.success && !r.redundant).length;
-          const redundantCount = data.results.filter((r: any) => r.redundant).length;
-          const retryCount = data.results.filter((r: any) => r.willRetry).length;
-          const failureCount = data.results.filter((r: any) => r.permanent).length;
+          const successCount = data.results?.filter((r: any) => r.success && !r.redundant).length || 0;
+          const redundantCount = data.results?.filter((r: any) => r.redundant).length || 0;
+          const retryCount = data.results?.filter((r: any) => r.willRetry).length || 0;
+          const failureCount = data.results?.filter((r: any) => r.permanent).length || 0;
 
           // Show appropriate toast notification
           if (successCount > 0 || redundantCount > 0) {

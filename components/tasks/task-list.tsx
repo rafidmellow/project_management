@@ -321,7 +321,7 @@ const columns = (
                         <AvatarImage src={assignee.user.image} alt={assignee.user.name || 'User'} />
                       ) : null}
                       <AvatarFallback className="bg-muted text-muted-foreground text-xs font-medium">
-                        {getUserInitials(assignee.user.name)}
+                        {getUserInitials(assignee.user.name || null)}
                       </AvatarFallback>
                     </Avatar>
                   </TooltipTrigger>
@@ -434,10 +434,10 @@ export function TaskList({
 
     // Update column headers to use external sorting if provided
     return cols.map(col => {
-      if (col.accessorKey && col.header && typeof col.header === 'function') {
+      if ('accessorKey' in col && col.accessorKey && col.header && typeof col.header === 'function') {
         return {
           ...col,
-          header: ({ column }) => {
+          header: ({ column }: any) => {
             const columnId = col.accessorKey as string;
             const isSorted = sortField === columnId;
             const isAsc = sortDirection === 'asc';
@@ -683,7 +683,7 @@ export function TaskList({
                             <AvatarImage src={assignee.user.image} alt={assignee.user.name || ''} />
                           ) : (
                             <AvatarFallback className="bg-primary/10 text-primary text-[10px]">
-                              {getUserInitials(assignee.user.name)}
+                              {getUserInitials(assignee.user.name || null)}
                             </AvatarFallback>
                           )}
                         </Avatar>

@@ -312,7 +312,7 @@ export default function TaskListView({
       </div>
       <DragOverlay>
         {activeTask ? (
-          <SortableTask task={activeTask} columnId={activeTask.status} view="list" />
+          <SortableTask task={activeTask} columnId={activeTask.status?.id || ''} view="list" />
         ) : null}
       </DragOverlay>
     </DndContext>

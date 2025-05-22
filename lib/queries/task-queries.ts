@@ -141,6 +141,7 @@ export function getTaskIncludeObject(
             },
           },
         },
+        assignedTo: { select: userMinimalSelectFields },
         status: { select: { name: true, color: true } },
       },
     };
@@ -157,6 +158,7 @@ export function getTaskIncludeObject(
               },
             },
           },
+          assignedTo: { select: userMinimalSelectFields },
           status: { select: { name: true, color: true } },
         },
       };
@@ -173,6 +175,7 @@ export function getTaskIncludeObject(
                 },
               },
             },
+            assignedTo: { select: userMinimalSelectFields },
             status: { select: { name: true, color: true } },
           },
         };

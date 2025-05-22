@@ -15,13 +15,18 @@ import type { ProjectStatus } from './project';
 export type { ProjectStatus } from './project';
 
 /**
+ * Task Priority type
+ */
+export type TaskPriority = 'low' | 'medium' | 'high';
+
+/**
  * Base Task interface representing the core task data
  */
 export interface Task {
   id: string;
   title: string;
   description?: string | null;
-  priority: 'low' | 'medium' | 'high' | string;
+  priority: TaskPriority;
   dueDate?: string | Date;
   projectId: string;
   parentId?: string | null;
@@ -80,6 +85,9 @@ export interface TaskAssignee {
   createdAt?: string | Date;
   updatedAt?: string | Date;
   user: UserSummary;
+  // Legacy properties for backward compatibility
+  avatar?: string;
+  name?: string;
 }
 
 /**
@@ -92,7 +100,7 @@ export interface TaskAssignee {
 export interface Subtask {
   id: string;
   title: string;
-  priority: 'low' | 'medium' | 'high' | string;
+  priority: TaskPriority;
   assignedToId?: string | null;
   assignedTo?: {
     id: string;
@@ -248,7 +256,7 @@ export interface TaskFilters {
   search: string;
   statusIds: string[];
   assigneeIds: string[];
-  priority: 'low' | 'medium' | 'high' | string | null;
+  priority: TaskPriority | null;
   completed: boolean | null;
   status?: string;
   assignee?: string;

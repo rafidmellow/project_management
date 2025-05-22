@@ -47,7 +47,7 @@ export function UserProjectRoles({ userId, teamMemberships }: UserProjectRolesPr
         setProjects([]);
       } else {
         // Format the data for display
-        const formattedMemberships = fetchedMemberships.map(membership => ({
+        const formattedMemberships = fetchedMemberships.map((membership: any) => ({
           id: membership.id,
           projectId: membership.project.id,
           projectTitle: membership.project.title,

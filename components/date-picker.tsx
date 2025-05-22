@@ -55,7 +55,6 @@ export function DatePicker({ onSelect, defaultDate, selected }: DatePickerProps)
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">
         <Calendar
-          mode="single"
           selected={date}
           onSelect={newDate => {
             setDate(newDate);

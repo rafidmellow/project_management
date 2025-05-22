@@ -82,17 +82,17 @@ export function UserProfileTasks({ tasks }: UserProfileTasksProps) {
                   <div className="flex gap-2">
                     <Badge
                       variant={
-                        task.status === 'completed'
+                        task.status?.name === 'completed'
                           ? 'success'
-                          : task.status === 'in-progress'
+                          : task.status?.name === 'in-progress'
                             ? 'default'
-                            : task.status === 'pending'
+                            : task.status?.name === 'pending'
                               ? 'secondary'
                               : 'outline'
                       }
                       className="capitalize"
                     >
-                      {task.status}
+                      {task.status?.name || 'No Status'}
                     </Badge>
                     <Badge
                       variant={

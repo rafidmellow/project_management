@@ -575,7 +575,7 @@ export async function DELETE(
       // to determine if `createdById` is part of the Task model
       if ((Prisma.TaskScalarFieldEnum as any).createdById) {
         tasksCreated = await prisma.task.count({
-          where: { createdById: userId },
+          where: { createdBy: { id: userId } } as any,
         });
       } else {
         console.log(

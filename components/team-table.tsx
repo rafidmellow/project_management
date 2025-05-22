@@ -150,7 +150,7 @@ export function TeamTable({ projectId }: TeamTableProps) {
               </TableCell>
             </TableRow>
           ) : (
-            teamMembers.map(member => (
+            teamMembers.map((member: any) => (
               <TableRow key={member.id}>
                 <TableCell>
                   <div className="flex items-center gap-3">
@@ -159,7 +159,7 @@ export function TeamTable({ projectId }: TeamTableProps) {
                       <AvatarFallback>
                         {member.user?.name
                           ?.split(' ')
-                          .map(n => n[0])
+                          .map((n: string) => n[0])
                           .join('') || '?'}
                       </AvatarFallback>
                     </Avatar>

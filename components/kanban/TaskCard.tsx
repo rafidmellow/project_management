@@ -67,7 +67,7 @@ export function TaskCard({ task, columnId, isDragging, onUpdate }: TaskCardProps
             {task.assignees?.map(assignee => (
               <Avatar key={assignee.id} className="h-6 w-6">
                 <AvatarImage src={assignee.avatar} alt={assignee.name} />
-                <AvatarFallback>{assignee.name[0]}</AvatarFallback>
+                <AvatarFallback>{assignee.name?.[0] || 'U'}</AvatarFallback>
               </Avatar>
             ))}
           </div>

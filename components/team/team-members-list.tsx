@@ -96,7 +96,7 @@ export function TeamMembersList({
     const userMap = new Map<string, TeamMemberWithProjects>();
 
     // First pass: collect all projects for each user
-    teamMembers.forEach(member => {
+    teamMembers.forEach((member: any) => {
       if (!member.user?.id || !member.project) return;
 
       const userId = member.user.id;
@@ -349,7 +349,7 @@ export function TeamMembersList({
                               key={`${projectId}-${member.user?.id}`}
                               member={member}
                               currentUserId={session?.user?.id}
-                              canDeleteTeamMembers={canDeleteTeamMembers}
+                              canDeleteTeamMembers={canDeleteTeamMembers || false}
                               onDeleteClick={confirmDelete}
                             />
                           ))}
@@ -410,7 +410,7 @@ export function TeamMembersList({
                 key={member.user?.id}
                 member={member}
                 currentUserId={session?.user?.id}
-                canDeleteTeamMembers={canDeleteTeamMembers}
+                canDeleteTeamMembers={canDeleteTeamMembers || false}
                 onDeleteClick={confirmDelete}
               />
             ))}

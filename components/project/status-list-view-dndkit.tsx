@@ -357,7 +357,7 @@ export function StatusListViewDndKit({
     if (active.data.current?.type === 'task') {
       const task = active.data.current.task as Task;
       setActiveTaskId(active.id);
-      setActiveStatusId(task.statusId);
+      setActiveStatusId(task.statusId || null);
 
       // Clone the tasks array for optimistic updates
       setClonedTasks([...tasks]);
@@ -399,12 +399,12 @@ export function StatusListViewDndKit({
 
       // If dragging over a task in a different status
       if (activeTask.statusId !== overTask.statusId) {
-        setActiveStatusId(overTask.statusId);
+        setActiveStatusId(overTask.statusId || null);
 
         // Update the status that's being dragged over
         setStatusesWithDragOver(prev => ({
           ...prev,
-          [overTask.statusId]: true,
+          [overTask.statusId || '']: true,
         }));
 
         // Update the cloned tasks for optimistic UI updates
@@ -500,11 +500,11 @@ export function StatusListViewDndKit({
 
         // If dropping onto a task in a different status
         if (activeTaskData.statusId !== overTaskData.statusId) {
-          await moveTask(activeTaskData.id, overTaskData.statusId, overTaskData.id);
+          await moveTask(activeTaskData.id, overTaskData.statusId || '', overTaskData.id);
         }
         // If dropping onto a task in the same status (reordering)
         else if (activeTaskData.id !== overTaskData.id) {
-          await moveTask(activeTaskData.id, overTaskData.statusId, overTaskData.id);
+          await moveTask(activeTaskData.id, overTaskData.statusId || '', overTaskData.id);
         }
       }
     } catch (error) {
