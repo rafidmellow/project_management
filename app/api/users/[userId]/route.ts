@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import prisma from '@/lib/prisma';
+import { Prisma } from '@/prisma/generated/client';
 import { authOptions } from '@/lib/auth-options';
 import { getUserById, updateUser } from '@/lib/queries/user-queries';
 import { PermissionService } from '@/lib/permissions/unified-permission-service';
@@ -561,13 +562,12 @@ export const DELETE: ApiRouteHandlerOneParam<'userId'> = async (req, { params })
       where: { userId },
     });
 
-    // Check for tasks created by the user - using the correct field name from the schema
-    // Note: If there's no createdById field in the Task model, we'll skip this check
+    // Check for tasks created by the user if the field exists in the Task model
     let tasksCreated = 0;
     try {
-      // Check if the field exists in the schema before querying
-      const taskFields = Object.keys(prisma.task.fields);
-      if (taskFields.includes('createdById')) {
+      // Prisma doesn't expose model fields at runtime, so check the scalar enum
+      // to determine if `createdById` is part of the Task model
+      if ((Prisma.TaskScalarFieldEnum as any).createdById) {
         tasksCreated = await prisma.task.count({
           where: { createdById: userId },
         });
@@ -577,7 +577,10 @@ export const DELETE: ApiRouteHandlerOneParam<'userId'> = async (req, { params })
         );
       }
     } catch (error) {
-      console.error('DELETE /api/users/[userId] - Error checking tasks created:', error);
+      console.error(
+        'DELETE /api/users/[userId] - Error checking tasks created:',
+        error
+      );
       // Continue with deletion process even if this check fails
     }
 
