@@ -9,6 +9,7 @@
 import { ActivityWithRelations } from './activity';
 import { UserSummary } from './user';
 import { Document, DocumentWithRelations } from './document';
+import type { ProjectStatus } from './project';
 
 // Re-export ProjectStatus for components that need it
 export type { ProjectStatus } from './project';
@@ -35,7 +36,7 @@ export interface Task {
   completed: boolean;
   // Optional properties that might be included in some contexts
   assignees?: TaskAssignee[];
-  status?: import('./project').ProjectStatus | null;
+  status?: ProjectStatus | null;
   project: {
     id: string;
     title: string;
