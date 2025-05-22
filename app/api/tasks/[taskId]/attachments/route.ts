@@ -1,3 +1,4 @@
+import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import prisma from '@/lib/prisma';
@@ -8,16 +9,18 @@ import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { existsSync } from 'fs';
-import { ApiRouteHandlerOneParam, getParams } from '@/lib/api-route-types';
 
 // GET /api/tasks/[taskId]/attachments - Get attachments for a task
-export const GET: ApiRouteHandlerOneParam<'taskId'> = async (_req, { params }) => {
+export async function GET(
+  _req: NextRequest,
+  { params }: { params: { taskId: string } }
+): Promise<Response> {
   try {
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    const taskId = await getParams(params).then(p => p.taskId);
+    const { taskId } = params;
     // Check permission
     const { hasPermission, error } = await checkTaskPermission(taskId, session, 'view');
     if (!hasPermission) {
@@ -48,16 +51,19 @@ export const GET: ApiRouteHandlerOneParam<'taskId'> = async (_req, { params }) =
       { status: 500 }
     );
   }
-};
+}
 
 // POST /api/tasks/[taskId]/attachments - Upload an attachment to a task
-export const POST: ApiRouteHandlerOneParam<'taskId'> = async (req, { params }) => {
+export async function POST(
+  req: NextRequest,
+  { params }: { params: { taskId: string } }
+): Promise<Response> {
   try {
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    const taskId = await getParams(params).then(p => p.taskId);
+    const { taskId } = params;
     // Check permission
     const { hasPermission, error } = await checkTaskPermission(taskId, session, 'update');
     if (!hasPermission) {
@@ -138,16 +144,19 @@ export const POST: ApiRouteHandlerOneParam<'taskId'> = async (req, { params }) =
       { status: 500 }
     );
   }
-};
+}
 
 // DELETE /api/tasks/[taskId]/attachments?attachmentId=xxx - Delete an attachment
-export const DELETE: ApiRouteHandlerOneParam<'taskId'> = async (req, { params }) => {
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { taskId: string } }
+): Promise<Response> {
   try {
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    const taskId = await getParams(params).then(p => p.taskId);
+    const { taskId } = params;
     const { searchParams } = new URL(req.url);
     const attachmentId = searchParams.get('attachmentId');
 
@@ -213,4 +222,4 @@ export const DELETE: ApiRouteHandlerOneParam<'taskId'> = async (req, { params })
       { status: 500 }
     );
   }
-};
+}

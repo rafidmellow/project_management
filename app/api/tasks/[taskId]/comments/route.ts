@@ -1,3 +1,4 @@
+import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import prisma from '@/lib/prisma';
@@ -5,7 +6,6 @@ import { authOptions } from '@/lib/auth-options';
 import { z } from 'zod';
 import { checkTaskPermission } from '@/lib/permissions/task-permissions';
 import { PermissionService } from '@/lib/permissions/unified-permission-service';
-import { ApiRouteHandlerOneParam } from '@/lib/api-route-types';
 
 // Validation schema for creating a comment
 const createCommentSchema = z.object({
@@ -13,15 +13,17 @@ const createCommentSchema = z.object({
 });
 
 // GET /api/tasks/[taskId]/comments - Get comments for a task
-export const GET: ApiRouteHandlerOneParam<'taskId'> = async (_req, { params }) => {
+export async function GET(
+  _req: NextRequest,
+  { params }: { params: { taskId: string } }
+): Promise<Response> {
   try {
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const taskId =
-      typeof params === 'object' && 'taskId' in params ? params.taskId : (await params).taskId;
+    const { taskId } = params;
 
     // Check permission
     const { hasPermission, error } = await checkTaskPermission(taskId, session, 'view');
@@ -53,18 +55,20 @@ export const GET: ApiRouteHandlerOneParam<'taskId'> = async (_req, { params }) =
       { status: 500 }
     );
   }
-};
+}
 
 // POST /api/tasks/[taskId]/comments - Add a comment to a task
-export const POST: ApiRouteHandlerOneParam<'taskId'> = async (req, { params }) => {
+export async function POST(
+  req: NextRequest,
+  { params }: { params: { taskId: string } }
+): Promise<Response> {
   try {
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const taskId =
-      typeof params === 'object' && 'taskId' in params ? params.taskId : (await params).taskId;
+    const { taskId } = params;
 
     // Check permission
     const { hasPermission, error } = await checkTaskPermission(taskId, session, 'update');
@@ -124,18 +128,20 @@ export const POST: ApiRouteHandlerOneParam<'taskId'> = async (req, { params }) =
       { status: 500 }
     );
   }
-};
+}
 
 // DELETE /api/tasks/[taskId]/comments?commentId=xxx - Delete a comment
-export const DELETE: ApiRouteHandlerOneParam<'taskId'> = async (req, { params }) => {
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { taskId: string } }
+): Promise<Response> {
   try {
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const taskId =
-      typeof params === 'object' && 'taskId' in params ? params.taskId : (await params).taskId;
+    const { taskId } = params;
     const { searchParams } = new URL(req.url);
     const commentId = searchParams.get('commentId');
 
@@ -198,4 +204,4 @@ export const DELETE: ApiRouteHandlerOneParam<'taskId'> = async (req, { params })
       { status: 500 }
     );
   }
-};
+}

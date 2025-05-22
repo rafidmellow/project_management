@@ -1,3 +1,4 @@
+import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import prisma from '@/lib/prisma';
@@ -7,10 +8,12 @@ import { join } from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { existsSync } from 'fs';
 import { PermissionService } from '@/lib/permissions/unified-permission-service';
-import { ApiRouteHandlerOneParam, getParams } from '@/lib/api-route-types';
 
 // PUT /api/users/[userId]/image - Upload a profile image for a user
-export const PUT: ApiRouteHandlerOneParam<'userId'> = async (req, { params }) => {
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: { userId: string } }
+): Promise<Response> {
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
@@ -19,7 +22,7 @@ export const PUT: ApiRouteHandlerOneParam<'userId'> = async (req, { params }) =>
     }
 
     // Extract userId from params safely
-    const userId = await getParams(params).then(p => p.userId);
+    const { userId } = params;
 
     // Check if user has permission to upload profile image for this user
     // Users can upload profile image to their own profile, users with user_management permission can upload to any profile
@@ -109,4 +112,4 @@ export const PUT: ApiRouteHandlerOneParam<'userId'> = async (req, { params }) =>
       { status: 500 }
     );
   }
-};
+}

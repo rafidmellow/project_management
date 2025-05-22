@@ -1,3 +1,4 @@
+import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import prisma from '@/lib/prisma';
@@ -5,10 +6,12 @@ import { Prisma } from '@/prisma/generated/client';
 import { authOptions } from '@/lib/auth-options';
 import { getUserById, updateUser } from '@/lib/queries/user-queries';
 import { PermissionService } from '@/lib/permissions/unified-permission-service';
-import { ApiRouteHandlerOneParam, getParams } from '@/lib/api-route-types';
 
 // GET /api/users/[userId] - Get a specific user by ID
-export const GET: ApiRouteHandlerOneParam<'userId'> = async (req, { params }) => {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { userId: string } }
+): Promise<Response> {
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
@@ -17,8 +20,7 @@ export const GET: ApiRouteHandlerOneParam<'userId'> = async (req, { params }) =>
     }
 
     // Extract userId from params safely
-    const resolvedParams = await getParams(params);
-    const { userId } = resolvedParams;
+    const { userId } = params;
     const isProfile = req.nextUrl.searchParams.get('profile') === 'true';
 
     // Check if user has permission to view this user
@@ -413,18 +415,20 @@ export const GET: ApiRouteHandlerOneParam<'userId'> = async (req, { params }) =>
       { status: 500 }
     );
   }
-};
+}
 
 // PATCH /api/users/[userId] - Update a user
-export const PATCH: ApiRouteHandlerOneParam<'userId'> = async (req, { params }) => {
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: { userId: string } }
+): Promise<Response> {
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     } // Extract userId from params safely
-    const resolvedParams = await getParams(params);
-    const { userId } = resolvedParams;
+    const { userId } = params;
 
     // Check if user has permission to update this user
     // Users can update their own profile, users with user_management permission can update any profile
@@ -471,10 +475,13 @@ export const PATCH: ApiRouteHandlerOneParam<'userId'> = async (req, { params }) 
       { status: 500 }
     );
   }
-};
+}
 
 // DELETE /api/users/[userId] - Delete a user
-export const DELETE: ApiRouteHandlerOneParam<'userId'> = async (req, { params }) => {
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { userId: string } }
+): Promise<Response> {
   console.log('DELETE /api/users/[userId] - Request received', { params });
 
   try {
@@ -492,8 +499,7 @@ export const DELETE: ApiRouteHandlerOneParam<'userId'> = async (req, { params })
     });
 
     // Extract userId from params safely
-    const resolvedParams = await getParams(params);
-    const { userId } = resolvedParams;
+    const { userId } = params;
     console.log('DELETE /api/users/[userId] - Target user ID:', userId);
 
     // Check if user has permission to delete users
@@ -649,4 +655,4 @@ export const DELETE: ApiRouteHandlerOneParam<'userId'> = async (req, { params })
       { status: 500 }
     );
   }
-};
+}
