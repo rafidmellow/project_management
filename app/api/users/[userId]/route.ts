@@ -577,10 +577,7 @@ export const DELETE: ApiRouteHandlerOneParam<'userId'> = async (req, { params })
         );
       }
     } catch (error) {
-      console.error(
-        'DELETE /api/users/[userId] - Error checking tasks created:',
-        error
-      );
+      console.error('DELETE /api/users/[userId] - Error checking tasks created:', error);
       // Continue with deletion process even if this check fails
     }
 

@@ -9,14 +9,16 @@ import { PermissionService } from '@/lib/permissions/unified-permission-service'
 const MAX_WORKING_HOURS_PER_DAY = 12;
 
 // GET /api/users/[userId]/attendance - Get attendance records for a specific user
-export async function GET(req: NextRequest, { params }: { params: { userId: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ userId: string }> }) {
   try {
     // Check authentication
     const session = await getServerSession(authOptions);
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    } // Extract userId from params
-    const { userId } = params;
+    }
+
+    // Extract userId from params (await required in App Router)
+    const { userId } = await params;
 
     // Check if user has permission to view this user's attendance
     // Users can view their own attendance, users with view_team_attendance permission can view any user's attendance

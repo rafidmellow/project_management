@@ -277,7 +277,7 @@ function getAllPermissionsWithMetadata() {
     // Convert permission key to a more readable format
     const name = key
       .split('_')
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join(' ');
 
     // Determine category based on the permission key
@@ -385,11 +385,7 @@ async function seedUsers() {
     // Then update the role using a direct SQL query
     await prisma.$executeRaw`UPDATE user SET role = ${role} WHERE id = ${user.id}`;
 
-    users[
-      role === 'user'
-        ? userData.jobTitle.toLowerCase().replace(/\s+/g, '_')
-        : role
-    ] = user;
+    users[role === 'user' ? userData.jobTitle.toLowerCase().replace(/\s+/g, '_') : role] = user;
   }
 
   // Create additional users for team diversity
@@ -426,8 +422,7 @@ async function seedProjects(users) {
   const projectsToCreate = [
     {
       title: 'Website Redesign',
-      description:
-        'Complete redesign of company marketing website with new branding',
+      description: 'Complete redesign of company marketing website with new branding',
       startDate: new Date(now.getFullYear(), now.getMonth() - 2, 15),
       endDate: new Date(now.getFullYear(), now.getMonth() + 2, 15),
       dueDate: new Date(now.getFullYear(), now.getMonth() + 2, 15),
@@ -557,10 +552,7 @@ async function seedTeamMembers(projects, users) {
     }
   }
 
-  const regularUsers = [
-    usersByRole.software_developer,
-    ...users.extraUsers,
-  ].filter(Boolean);
+  const regularUsers = [usersByRole.software_developer, ...users.extraUsers].filter(Boolean);
   const allUsers = [
     users.admin,
     users.manager,
@@ -609,19 +601,17 @@ async function seedTasks(projects, users) {
   const now = new Date();
 
   // Website Redesign project tasks
-  const websiteProject = projects.find((p) => p.title === 'Website Redesign');
+  const websiteProject = projects.find(p => p.title === 'Website Redesign');
   if (websiteProject) {
     const websiteStatuses = await prisma.projectStatus.findMany({
       where: { projectId: websiteProject.id },
       orderBy: { order: 'asc' },
     });
 
-    const todoStatus = websiteStatuses.find((s) => s.name === 'To Do');
-    const inProgressStatus = websiteStatuses.find(
-      (s) => s.name === 'In Progress',
-    );
-    const reviewStatus = websiteStatuses.find((s) => s.name === 'Review');
-    const doneStatus = websiteStatuses.find((s) => s.name === 'Done');
+    const todoStatus = websiteStatuses.find(s => s.name === 'To Do');
+    const inProgressStatus = websiteStatuses.find(s => s.name === 'In Progress');
+    const reviewStatus = websiteStatuses.find(s => s.name === 'Review');
+    const doneStatus = websiteStatuses.find(s => s.name === 'Done');
 
     // Create parent tasks
     const designTask = await prisma.task.create({
@@ -633,11 +623,7 @@ async function seedTasks(projects, users) {
         projectId: websiteProject.id,
         statusId: inProgressStatus?.id,
         order: 1,
-        startDate: new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate() - 5,
-        ),
+        startDate: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5),
         estimatedTime: 40,
         timeSpent: 25,
       },
@@ -655,11 +641,7 @@ async function seedTasks(projects, users) {
         parentId: designTask.id,
         statusId: doneStatus?.id,
         order: 1,
-        startDate: new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate() - 5,
-        ),
+        startDate: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5),
         estimatedTime: 16,
         timeSpent: 14,
         completed: true,
@@ -673,11 +655,7 @@ async function seedTasks(projects, users) {
         parentId: designTask.id,
         statusId: inProgressStatus?.id,
         order: 2,
-        startDate: new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate() - 2,
-        ),
+        startDate: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 2),
         estimatedTime: 24,
         timeSpent: 11,
       },
@@ -694,11 +672,7 @@ async function seedTasks(projects, users) {
         title: 'Develop frontend components',
         description: 'Implement the frontend components based on the design',
         priority: 'medium',
-        dueDate: new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate() + 14,
-        ),
+        dueDate: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 14),
         projectId: websiteProject.id,
         statusId: todoStatus?.id,
         order: 2,
@@ -713,11 +687,7 @@ async function seedTasks(projects, users) {
         title: 'Create content for website',
         description: 'Write and prepare all content for the new website',
         priority: 'medium',
-        dueDate: new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate() + 10,
-        ),
+        dueDate: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 10),
         projectId: websiteProject.id,
         statusId: todoStatus?.id,
         order: 3,
@@ -729,37 +699,28 @@ async function seedTasks(projects, users) {
   }
 
   // Mobile App Development project tasks
-  const mobileProject = projects.find(
-    (p) => p.title === 'Mobile App Development',
-  );
+  const mobileProject = projects.find(p => p.title === 'Mobile App Development');
   if (mobileProject) {
     const mobileStatuses = await prisma.projectStatus.findMany({
       where: { projectId: mobileProject.id },
       orderBy: { order: 'asc' },
     });
 
-    const backlogStatus = mobileStatuses.find((s) => s.name === 'Backlog');
-    const developmentStatus = mobileStatuses.find(
-      (s) => s.name === 'In Development',
-    );
-    const testingStatus = mobileStatuses.find((s) => s.name === 'Testing');
+    const backlogStatus = mobileStatuses.find(s => s.name === 'Backlog');
+    const developmentStatus = mobileStatuses.find(s => s.name === 'In Development');
+    const testingStatus = mobileStatuses.find(s => s.name === 'Testing');
 
     // Create parent tasks
     const requirementsTask = await prisma.task.create({
       data: {
         title: 'Define app requirements',
-        description:
-          'Document functional and non-functional requirements for the mobile app',
+        description: 'Document functional and non-functional requirements for the mobile app',
         priority: 'high',
         dueDate: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 5),
         projectId: mobileProject.id,
         statusId: developmentStatus?.id,
         order: 1,
-        startDate: new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate() - 3,
-        ),
+        startDate: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 3),
         estimatedTime: 20,
         timeSpent: 15,
       },
@@ -771,11 +732,7 @@ async function seedTasks(projects, users) {
         title: 'Design UI/UX for mobile app',
         description: 'Create user interface designs and user experience flows',
         priority: 'high',
-        dueDate: new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate() + 12,
-        ),
+        dueDate: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 12),
         projectId: mobileProject.id,
         statusId: backlogStatus?.id,
         order: 2,
@@ -790,11 +747,7 @@ async function seedTasks(projects, users) {
         title: 'Develop API endpoints',
         description: 'Create backend API endpoints for the mobile app',
         priority: 'medium',
-        dueDate: new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate() + 20,
-        ),
+        dueDate: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 20),
         projectId: mobileProject.id,
         statusId: backlogStatus?.id,
         order: 3,
@@ -813,11 +766,7 @@ async function seedTasks(projects, users) {
         projectId: mobileProject.id,
         statusId: testingStatus?.id,
         order: 4,
-        startDate: new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate() - 1,
-        ),
+        startDate: new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1),
         estimatedTime: 16,
         timeSpent: 4,
       },
@@ -844,10 +793,7 @@ async function seedTaskAssignees(tasks, users) {
     }
   }
 
-  const regularUsers = [
-    usersByRole.software_developer,
-    ...users.extraUsers,
-  ].filter(Boolean);
+  const regularUsers = [usersByRole.software_developer, ...users.extraUsers].filter(Boolean);
   const allUsers = [
     users.admin,
     users.manager,
@@ -917,17 +863,14 @@ async function seedComments(tasks, users) {
 
     for (let i = 0; i < commentCount; i++) {
       const randomUser = allUsers[Math.floor(Math.random() * allUsers.length)];
-      const randomComment =
-        commentTemplates[Math.floor(Math.random() * commentTemplates.length)];
+      const randomComment = commentTemplates[Math.floor(Math.random() * commentTemplates.length)];
 
       await prisma.comment.create({
         data: {
           content: randomComment,
           taskId: task.id,
           userId: randomUser.id,
-          createdAt: new Date(
-            Date.now() - Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000,
-          ), // Random date within last week
+          createdAt: new Date(Date.now() - Math.floor(Math.random() * 7) * 24 * 60 * 60 * 1000), // Random date within last week
         },
       });
     }
@@ -990,15 +933,11 @@ async function seedAttendanceRecords(users, projects, tasks) {
         checkOutTime.setHours(checkOutHour, checkOutMinute, 0, 0);
 
         // Calculate work hours
-        const workHours =
-          (checkOutTime.getTime() - checkInTime.getTime()) / (1000 * 60 * 60);
+        const workHours = (checkOutTime.getTime() - checkInTime.getTime()) / (1000 * 60 * 60);
 
         // Randomly assign to a project and task
-        const randomProject =
-          projects[Math.floor(Math.random() * projects.length)];
-        const projectTasks = tasks.filter(
-          (t) => t.projectId === randomProject.id,
-        );
+        const randomProject = projects[Math.floor(Math.random() * projects.length)];
+        const projectTasks = tasks.filter(t => t.projectId === randomProject.id);
         const randomTask =
           projectTasks.length > 0
             ? projectTasks[Math.floor(Math.random() * projectTasks.length)]
@@ -1034,7 +973,7 @@ async function seedAttendanceRecords(users, projects, tasks) {
     const adjustmentDate = new Date(
       now.getFullYear(),
       now.getMonth(),
-      now.getDate() - Math.floor(Math.random() * 30),
+      now.getDate() - Math.floor(Math.random() * 30)
     );
 
     await prisma.attendance.create({
@@ -1112,8 +1051,7 @@ async function seedEvents(projects) {
     const eventCount = 3 + Math.floor(Math.random() * 6);
 
     for (let i = 0; i < eventCount; i++) {
-      const eventType =
-        eventTypes[Math.floor(Math.random() * eventTypes.length)];
+      const eventType = eventTypes[Math.floor(Math.random() * eventTypes.length)];
       const daysFromNow = -30 + Math.floor(Math.random() * 60); // Events from 30 days ago to 30 days in future
       const eventDate = new Date(now);
       eventDate.setDate(eventDate.getDate() + daysFromNow);
@@ -1172,8 +1110,7 @@ async function seedDocuments(users) {
     const docCount = 1 + Math.floor(Math.random() * 3);
 
     for (let i = 0; i < docCount; i++) {
-      const docTemplate =
-        documentTypes[Math.floor(Math.random() * documentTypes.length)];
+      const docTemplate = documentTypes[Math.floor(Math.random() * documentTypes.length)];
 
       await prisma.document.create({
         data: {
@@ -1249,9 +1186,7 @@ async function seedActivities(users, projects, tasks) {
     // Create task update activities (50% chance)
     if (Math.random() > 0.5) {
       const updateDate = new Date(task.createdAt);
-      updateDate.setDate(
-        updateDate.getDate() + Math.floor(Math.random() * 5) + 1,
-      );
+      updateDate.setDate(updateDate.getDate() + Math.floor(Math.random() * 5) + 1);
 
       await prisma.activity.create({
         data: {
@@ -1271,9 +1206,7 @@ async function seedActivities(users, projects, tasks) {
     if (task.completed) {
       const randomUser = allUsers[Math.floor(Math.random() * allUsers.length)];
       const completeDate = new Date(task.createdAt);
-      completeDate.setDate(
-        completeDate.getDate() + Math.floor(Math.random() * 14) + 1,
-      );
+      completeDate.setDate(completeDate.getDate() + Math.floor(Math.random() * 14) + 1);
 
       await prisma.activity.create({
         data: {
@@ -1333,10 +1266,8 @@ async function seedTaskAttachments(tasks, users) {
       const attachmentCount = 1 + Math.floor(Math.random() * 3);
 
       for (let i = 0; i < attachmentCount; i++) {
-        const attachmentType =
-          attachmentTypes[Math.floor(Math.random() * attachmentTypes.length)];
-        const randomUser =
-          allUsers[Math.floor(Math.random() * allUsers.length)];
+        const attachmentType = attachmentTypes[Math.floor(Math.random() * attachmentTypes.length)];
+        const randomUser = allUsers[Math.floor(Math.random() * allUsers.length)];
 
         await prisma.taskAttachment.create({
           data: {
@@ -1355,7 +1286,7 @@ async function seedTaskAttachments(tasks, users) {
 
 // Execute the main function
 main()
-  .catch((e) => {
+  .catch(e => {
     process.exit(1);
   })
   .finally(async () => {

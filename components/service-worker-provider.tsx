@@ -22,20 +22,25 @@ export function ServiceWorkerProvider({ children }: { children: React.ReactNode 
 
     const registerSW = async () => {
       try {
+        console.log('Attempting to register Service Worker...');
         const registered = await registerServiceWorker();
         setSwRegistered(registered);
 
         if (registered) {
-          console.log('Service Worker registered successfully');
+          console.log('✅ Service Worker registered successfully');
         } else {
-          console.log('Service Worker registration failed');
+          console.warn('⚠️ Service Worker registration failed - check console for details');
         }
       } catch (error) {
-        console.error('Error registering Service Worker:', error);
+        console.error('❌ Error registering Service Worker:', error);
+        setSwRegistered(false);
       }
     };
 
-    registerSW();
+    // Add a small delay to ensure the page is fully loaded
+    const timeoutId = setTimeout(registerSW, 100);
+
+    return () => clearTimeout(timeoutId);
   }, []);
 
   // Periodic check to ensure service worker is still registered

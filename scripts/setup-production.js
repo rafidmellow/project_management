@@ -38,9 +38,7 @@ function log(message, color = colors.reset) {
 
 // Helper function to log errors
 function logError(message, error = null) {
-  console.error(
-    `${colors.red}${colors.bright}ERROR: ${message}${colors.reset}`,
-  );
+  console.error(`${colors.red}${colors.bright}ERROR: ${message}${colors.reset}`);
   if (error) {
     console.error(`${colors.dim}${error.stack || error}${colors.reset}`);
   }
@@ -56,10 +54,7 @@ function logSection(title) {
 // Function to run a command and return a promise
 function runCommand(command, args = [], options = {}) {
   return new Promise((resolve, reject) => {
-    log(
-      `Running: ${colors.bright}${command} ${args.join(' ')}${colors.reset}`,
-      colors.yellow,
-    );
+    log(`Running: ${colors.bright}${command} ${args.join(' ')}${colors.reset}`, colors.yellow);
 
     const env = {
       ...process.env,
@@ -73,19 +68,15 @@ function runCommand(command, args = [], options = {}) {
       ...options,
     });
 
-    childProcess.on('close', (code) => {
+    childProcess.on('close', code => {
       if (code === 0) {
         resolve();
       } else {
-        reject(
-          new Error(
-            `Command failed with exit code ${code}: ${command} ${args.join(' ')}`,
-          ),
-        );
+        reject(new Error(`Command failed with exit code ${code}: ${command} ${args.join(' ')}`));
       }
     });
 
-    childProcess.on('error', (error) => {
+    childProcess.on('error', error => {
       reject(new Error(`Failed to start command: ${error.message}`));
     });
   });
@@ -103,21 +94,14 @@ async function setupDatabase() {
   }
 
   // Print the DATABASE_URL for debugging (masking the password)
-  const maskedUrl = dbUrl.replace(
-    /(mysql:\/\/[^:]+:)([^@]*)(@.*)/,
-    '$1*****$3',
-  );
+  const maskedUrl = dbUrl.replace(/(mysql:\/\/[^:]+:)([^@]*)(@.*)/, '$1*****$3');
   log(`Using database URL: ${maskedUrl}`, colors.dim);
 
   // Parse the database URL to extract connection details
-  const matches = dbUrl.match(
-    /mysql:\/\/([^:]+):([^@]*)@([^:]+):(\d+)\/([^?]+)/,
-  );
+  const matches = dbUrl.match(/mysql:\/\/([^:]+):([^@]*)@([^:]+):(\d+)\/([^?]+)/);
 
   if (!matches) {
-    logError(
-      'Invalid DATABASE_URL format. Expected: mysql://user:password@host:port/database',
-    );
+    logError('Invalid DATABASE_URL format. Expected: mysql://user:password@host:port/database');
     process.exit(1);
   }
 
@@ -152,7 +136,7 @@ async function setupDatabase() {
     // Check if database exists
     const [rows] = await connection.execute(
       `SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = ?`,
-      [dbName],
+      [dbName]
     );
 
     if (rows.length > 0) {
@@ -221,11 +205,7 @@ async function seedDatabase() {
       log('Permissions seeded successfully', colors.green);
     }
 
-    if (
-      existsSync(
-        path.join(rootDir, 'scripts', 'update-edge-permissions-fixed.js'),
-      )
-    ) {
+    if (existsSync(path.join(rootDir, 'scripts', 'update-edge-permissions-fixed.js'))) {
       await runCommand('node', ['scripts/update-edge-permissions-fixed.js']);
       log('Edge permissions updated successfully', colors.green);
     }
@@ -283,7 +263,7 @@ async function main() {
 
 // Run the main function
 main()
-  .then((success) => {
+  .then(success => {
     if (success) {
       log('Production setup completed successfully', colors.green);
       process.exit(0);
@@ -292,7 +272,7 @@ main()
       process.exit(1);
     }
   })
-  .catch((error) => {
+  .catch(error => {
     logError('Unhandled error during production setup:', error);
     process.exit(1);
   });

@@ -41,9 +41,25 @@ export async function registerServiceWorker(maxRetries = 3) {
     try {
       // Use absolute URL to avoid redirect issues
       const swUrl = `${window.location.origin}/sw.js`;
+
+      // First, check if the service worker file is accessible
+      const swResponse = await fetch(swUrl, { method: 'HEAD' });
+      if (!swResponse.ok) {
+        throw new Error(
+          `Service Worker script not accessible: ${swResponse.status} ${swResponse.statusText}`
+        );
+      }
+
+      // Check if we're being redirected
+      if (swResponse.url !== swUrl) {
+        throw new Error(`Service Worker script is behind a redirect: ${swResponse.url}`);
+      }
+
       const registration = await navigator.serviceWorker.register(swUrl, {
         scope: '/',
+        updateViaCache: 'none', // Always fetch fresh service worker
       });
+
       console.log('Service Worker registered with scope:', registration.scope);
 
       // Wait for the service worker to be ready
@@ -53,19 +69,32 @@ export async function registerServiceWorker(maxRetries = 3) {
       return true;
     } catch (error) {
       retries++;
+      const errorMessage = error instanceof Error ? error.message : String(error);
+
       console.error(
         `Service Worker registration failed (attempt ${retries}/${maxRetries}):`,
-        error
+        errorMessage
       );
+
+      // Don't retry for certain types of errors
+      if (errorMessage.includes('redirect') || errorMessage.includes('not accessible')) {
+        console.error(
+          'Service Worker registration failed due to access/redirect issue. Not retrying.'
+        );
+        return false;
+      }
 
       if (retries >= maxRetries) {
         console.error('Max retries reached for Service Worker registration');
         return false;
       }
 
-      // Exponential backoff
-      const delay = Math.pow(2, retries) * 1000;
-      console.log(`Retrying in ${delay}ms...`);
+      // Exponential backoff with jitter
+      const baseDelay = Math.pow(2, retries) * 1000;
+      const jitter = Math.random() * 1000;
+      const delay = baseDelay + jitter;
+
+      console.log(`Retrying in ${Math.round(delay)}ms...`);
       await new Promise(resolve => setTimeout(resolve, delay));
     }
   }

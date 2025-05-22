@@ -19,7 +19,8 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ ta
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const taskId = params.taskId;
+    // Extract taskId from params (await required in App Router)
+    const { taskId } = await params;
 
     // Check if task exists
     const task = await prisma.task.findUnique({

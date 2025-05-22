@@ -19,13 +19,11 @@ async function main() {
   }
 
   // Parse the database URL to extract connection details
-  const matches = dbUrl.match(
-    /mysql:\/\/([^:]+):([^@]*)@([^:]+):(\d+)\/([^?]+)/,
-  );
+  const matches = dbUrl.match(/mysql:\/\/([^:]+):([^@]*)@([^:]+):(\d+)\/([^?]+)/);
 
   if (!matches) {
     console.error(
-      'Invalid DATABASE_URL format. Expected: mysql://user:password@host:port/database',
+      'Invalid DATABASE_URL format. Expected: mysql://user:password@host:port/database'
     );
     process.exit(1);
   }
@@ -46,7 +44,7 @@ async function main() {
     // Check if database exists
     const [rows] = await connection.execute(
       `SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = ?`,
-      [dbName],
+      [dbName]
     );
 
     if (rows.length > 0) {
@@ -72,7 +70,7 @@ main()
     console.log('Database setup completed successfully');
     process.exit(0);
   })
-  .catch((error) => {
+  .catch(error => {
     console.error('Error setting up database:', error);
     process.exit(1);
   });

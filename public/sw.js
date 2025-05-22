@@ -6,13 +6,10 @@ const ATTENDANCE_SYNC_QUEUE = 'attendance-sync-queue';
 const AUTO_CHECKOUT_SYNC_TAG = 'auto-checkout-sync';
 
 // Essential files to cache during installation
+// Note: Only cache files that are guaranteed to be accessible during installation
 const STATIC_ASSETS = [
-  '/',
-  '/offline',
-  '/attendance/dashboard',
-  '/attendance/history',
-  '/attendance/statistics',
-  // Add CSS, JS, and image assets that should be available offline
+  // Don't cache root or protected routes during installation
+  // These will be cached dynamically when accessed
 ];
 
 // Pages that should have offline fallbacks
@@ -32,16 +29,21 @@ self.addEventListener('install', (event) => {
 
   event.waitUntil(
     Promise.all([
-      // Cache static assets
-      caches.open(STATIC_CACHE_NAME).then((cache) => {
-        console.log('[Service Worker] Caching static assets');
-        return cache.addAll(STATIC_ASSETS);
-      }),
+      // Cache static assets only if there are any
+      STATIC_ASSETS.length > 0
+        ? caches.open(STATIC_CACHE_NAME).then((cache) => {
+            console.log('[Service Worker] Caching static assets');
+            return cache.addAll(STATIC_ASSETS);
+          })
+        : Promise.resolve(),
 
-      // Cache offline page
+      // Try to cache offline page, but don't fail installation if it's not accessible
       caches.open(CACHE_NAME).then((cache) => {
-        console.log('[Service Worker] Caching offline page');
-        return cache.add('/offline');
+        console.log('[Service Worker] Attempting to cache offline page');
+        return cache.add('/offline').catch(error => {
+          console.warn('[Service Worker] Could not cache offline page during installation:', error);
+          // Don't throw - this is not critical for installation
+        });
       })
     ])
     .then(() => {
@@ -49,6 +51,8 @@ self.addEventListener('install', (event) => {
     })
     .catch(error => {
       console.error('[Service Worker] Installation failed:', error);
+      // Re-throw to fail the installation if critical errors occur
+      throw error;
     })
   );
 });

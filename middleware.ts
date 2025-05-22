@@ -15,6 +15,8 @@ const PUBLIC_PATHS = [
   '/favicon.ico',
   '/images',
   '/fonts',
+  '/sw.js', // Allow service worker script access
+  '/manifest.json', // Allow PWA manifest access
   '/api/trpc', // Allow access to tRPC if used
   '/api/health', // Allow health checks
   '/api/webhooks', // Allow webhooks
