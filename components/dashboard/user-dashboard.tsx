@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { CheckCircle2, FileText, Layers, Clock } from 'lucide-react';
 import { DashboardStats } from '@/types/dashboard';
-import { calculateTaskStats } from '@/utils/dashboard-utils';
+import { calculateTaskStats } from '@/lib/utils/dashboard-utils';
 import { useUserTasks } from '@/hooks/use-user-tasks';
 import Link from 'next/link';
 

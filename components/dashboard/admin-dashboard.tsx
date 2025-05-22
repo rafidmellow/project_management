@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { BarChart3, CheckCircle2, FileText, Layers, Users } from 'lucide-react';
 import { DashboardStats, ProjectSummary, SystemStats } from '@/types/dashboard';
-import { calculateProjectStatusDistribution } from '@/utils/dashboard-utils';
+import { calculateProjectStatusDistribution } from '@/lib/utils/dashboard-utils';
 import { StatsCard } from './stats-card';
 
 interface AdminDashboardProps {
