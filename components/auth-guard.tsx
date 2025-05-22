@@ -6,7 +6,6 @@ import { Spinner } from '@/components/ui/spinner';
 import { useAuthSession } from '@/hooks/use-auth-session';
 import { toast } from 'sonner';
 import { ClientPermissionService } from '@/lib/permissions/client-permission-service';
-import { useHasPermission } from '@/hooks/use-permission';
 
 interface AuthGuardProps {
   children: React.ReactNode;
