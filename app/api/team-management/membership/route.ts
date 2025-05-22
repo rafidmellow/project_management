@@ -41,8 +41,8 @@ export const GET = withAuth(async (req: NextRequest, context: any, session: any)
     });
 
     // Check if user has permission to view all projects
-    const hasViewAllProjectsPermission = await PermissionService.hasPermission(
-      session.user.role,
+    const hasViewAllProjectsPermission = await PermissionService.hasPermissionById(
+      session.user.id,
       'view_projects'
     );
 

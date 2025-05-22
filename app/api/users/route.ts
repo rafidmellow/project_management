@@ -36,9 +36,11 @@ export async function GET(req: NextRequest) {
     const where: any = {};
 
     // For regular users, only return team members they work with
-    // Get user role and check permissions
-    const userRole = session.user.role;
-    const hasTeamViewPermission = await PermissionService.hasPermission(userRole, 'team_view');
+    // Check permission based on the latest role from the database
+    const hasTeamViewPermission = await PermissionService.hasPermissionById(
+      session.user.id,
+      'team_view'
+    );
 
     // If user has team_view permission, they can see all users
     // If not and no specific project is requested, limit to users in the same projects
@@ -63,7 +65,6 @@ export async function GET(req: NextRequest) {
           },
         },
       };
-    } else if (hasTeamViewPermission) {
     }
 
     if (role && role !== 'all') {
