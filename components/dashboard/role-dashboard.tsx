@@ -2,7 +2,8 @@
 
 import { useSession } from 'next-auth/react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { useUserRole, useUserPermissions, useHasPermission } from '@/hooks/use-permission';
+import { useUserRole, useUserPermissions } from '@/hooks/use-permission';
+import { useHasPermission } from '@/hooks/use-has-permission';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { CheckCircle2, ShieldAlert, ShieldCheck } from 'lucide-react';
