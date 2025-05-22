@@ -9,7 +9,7 @@ import {
   calculateTaskStats,
   calculateTeamMembers,
   calculateProjectStatusDistribution,
-} from '@/utils/dashboard-utils';
+} from '@/lib/utils/dashboard-utils';
 import { StatsCard } from './stats-card';
 
 interface ManagerDashboardProps {
