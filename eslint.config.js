@@ -8,6 +8,7 @@ import prettierPlugin from 'eslint-plugin-prettier';
 export default [
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
+  nextPlugin.flatConfig.coreWebVitals,
   // Add specific config for scripts
   {
     files: ['scripts/**/*.{js,mjs}'],
@@ -60,6 +61,7 @@ export default [
         },
       ],
       '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
 
       // Prettier rules
       'prettier/prettier': ['warn'],
@@ -74,6 +76,19 @@ export default [
     },
   },
   {
-    ignores: ['node_modules/**', '.next/**', 'out/**', 'public/**', '**/*.d.ts'],
+    files: ['**/*.ts', '**/*.tsx'],
+    rules: {
+      '@typescript-eslint/explicit-module-boundary-types': 'warn',
+    },
+  },
+  {
+    ignores: [
+      'node_modules/**',
+      '.next/**',
+      'out/**',
+      'public/**',
+      'prisma/generated/**',
+      '**/*.d.ts',
+    ],
   },
 ];
