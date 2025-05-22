@@ -129,7 +129,6 @@ export async function fetchAPI(url: string, options: RequestInit = {}) {
 
     // Add the original error as a cause if supported
     if (error instanceof Error) {
-      // @ts-ignore - cause property might not be recognized by TypeScript
       apiError.cause = error;
     }
 

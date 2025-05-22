@@ -127,7 +127,7 @@ export function getDeviceInfo(userAgent: string): string {
     } else if (userAgent.indexOf('Android') !== -1) {
       // Try to extract Android device model
       const androidModelMatch = userAgent.match(
-        /Android[\s\/]([\d\.]+)[;\)](?:[^;]*;)*\s([^;]*[^\s;])/i
+        /Android[\s/]([\d.]+)[;)](?:[^;]*;)*\s([^;]*[^\s;])/i
       );
       if (androidModelMatch && androidModelMatch[2]) {
         deviceName = androidModelMatch[2].trim();

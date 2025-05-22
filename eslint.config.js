@@ -61,7 +61,7 @@ export default [
         },
       ],
       '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/explicit-module-boundary-types': 'off',
+      '@typescript-eslint/explicit-module-boundary-types': 'warn',
 
       // Prettier rules
       'prettier/prettier': ['warn'],

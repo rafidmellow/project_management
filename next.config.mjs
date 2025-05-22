@@ -17,6 +17,7 @@ import path from 'path';
 const nextConfig = {
   eslint: {
     dirs: ['app', 'components', 'lib', 'hooks', 'types', 'utils', 'providers'],
+    // Temporarily ignore ESLint during builds since we have many warnings but no errors
     ignoreDuringBuilds: true,
   },
   typescript: {

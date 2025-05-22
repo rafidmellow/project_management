@@ -133,7 +133,7 @@ function getCurrentPosition(): Promise<GeolocationPosition> {
 
         const enhancedError = new Error(errorMessage);
         enhancedError.name = 'GeolocationError';
-        // @ts-ignore - Add the original error code for reference
+        // @ts-expect-error - Service worker registration may not be available in all environments - Add the original error code for reference
         enhancedError.code = error.code;
 
         reject(enhancedError);

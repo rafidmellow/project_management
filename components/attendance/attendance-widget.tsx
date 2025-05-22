@@ -161,7 +161,7 @@ export function AttendanceWidget() {
           getSyncQueue().then(queue => setPendingActions(queue));
           break;
 
-        case 'SYNC_COMPLETED':
+        case 'SYNC_COMPLETED': {
           console.log('Sync completed:', data.results);
           setSyncInProgress(false);
 
@@ -218,6 +218,7 @@ export function AttendanceWidget() {
           // Refresh attendance data
           fetchAttendance();
           break;
+        }
 
         default:
           console.log('Unknown message type:', data.type, data);
