@@ -1,6 +1,5 @@
 // scripts/setup-db.js
 // Script to set up the database for the project
-/* eslint-disable no-console */
 
 import dotenv from 'dotenv';
 import mysql from 'mysql2/promise';

@@ -28,6 +28,7 @@ interface TaskCardProps {
   onEdit?: (taskId: string) => void;
   onDelete?: (taskId: string) => void;
   onUpdateAssignees: (taskId: string, assigneeIds: string[]) => void;
+  className?: string;
 }
 
 export function TaskCard({
@@ -39,6 +40,7 @@ export function TaskCard({
   onEdit,
   onDelete,
   onUpdateAssignees,
+  className,
 }: TaskCardProps) {
   // Force re-render when task changes
   const [, forceUpdate] = useState({});
@@ -105,7 +107,8 @@ export function TaskCard({
         'bg-background p-2 xs:p-3 rounded-md shadow-xs border-l-4 flex flex-col gap-1.5 xs:gap-2',
         'transition-all duration-200 hover:shadow-md touch-manipulation',
         isCompleted ? 'opacity-70' : '',
-        isDragging ? 'shadow-lg ring-2 ring-primary ring-opacity-50' : ''
+        isDragging ? 'shadow-lg ring-2 ring-primary ring-opacity-50' : '',
+        className
       )}
       style={{
         borderLeftColor: task.status?.color || '#6E56CF',

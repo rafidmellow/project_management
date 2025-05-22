@@ -6,10 +6,12 @@
  */
 
 // Import types from other files to avoid duplication
-import { ProjectStatus } from './project';
 import { ActivityWithRelations } from './activity';
 import { UserSummary } from './user';
 import { Document, DocumentWithRelations } from './document';
+
+// Re-export ProjectStatus for components that need it
+export type { ProjectStatus } from './project';
 
 /**
  * Base Task interface representing the core task data
@@ -33,7 +35,7 @@ export interface Task {
   completed: boolean;
   // Optional properties that might be included in some contexts
   assignees?: TaskAssignee[];
-  status?: ProjectStatus | null;
+  status?: import('./project').ProjectStatus | null;
   project: {
     id: string;
     title: string;

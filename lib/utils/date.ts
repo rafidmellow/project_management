@@ -91,7 +91,7 @@ export function safeParseISO(dateString: string): Date {
 // ==============================
 
 /**
- * Format a date for display
+ * Format a date for display - handles all date types used in the application
  */
 export function formatDate(
   date: Date | string | null | undefined,
@@ -114,6 +114,18 @@ export function formatDate(
   } catch (error) {
     return fallback;
   }
+}
+
+/**
+ * Safe format function that handles all date types and provides fallbacks
+ * This is the recommended function to use throughout the application
+ */
+export function safeFormat(
+  date: Date | string | null | undefined,
+  formatString = 'MMM d, yyyy',
+  fallback = 'Not set'
+): string {
+  return formatDate(date, formatString, fallback);
 }
 
 /**
@@ -486,14 +498,4 @@ export function formatDateLegacy(date: string | null, formatString = 'MMM d, yyy
   return formatDate(date, formatString);
 }
 
-/**
- * Safely format a date with a fallback value
- * This is a convenience function used in several components
- */
-export function safeFormat(
-  date: Date | string | null | undefined,
-  formatString: string = 'MMM d, yyyy',
-  fallback: string = 'N/A'
-): string {
-  return formatDate(date, formatString, fallback);
-}
+

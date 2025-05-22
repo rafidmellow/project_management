@@ -413,16 +413,13 @@ export default function ProjectPage() {
           <div className="space-y-4">
             <TaskProvider projectId={projectId}>
               <KanbanBoard
-                columns={statuses.map(status => ({
-                  id: status.id,
-                  title: status.name,
-                  tasks: tasks.filter(task => task.statusId === status.id),
-                }))}
+                projectId={projectId}
+                onEditTask={handleEditTask}
+                onDeleteTask={(taskId) => {
+                  // Handle task deletion
+                  console.log('Delete task:', taskId);
+                }}
                 onAddTask={handleCreateTask}
-                onUpdateTask={handleEditTask}
-                onReorderTasks={() => {}}
-                onMoveTask={() => {}}
-                onError={() => {}}
                 showAddButton={true}
                 emptyStateMessage="No tasks in this status"
               />

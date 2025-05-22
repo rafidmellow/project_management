@@ -1,6 +1,5 @@
 // scripts/setup-production.js
 // Script to set up the production environment
-/* eslint-disable no-console */
 
 import dotenv from 'dotenv';
 import mysql from 'mysql2/promise';

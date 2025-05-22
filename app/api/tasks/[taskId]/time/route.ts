@@ -43,6 +43,7 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ ta
 
     // Check if user has permission to update the task
     const isTeamMember = task.project.teamMembers.some(tm => tm.userId === session.user.id);
+    const { PermissionService } = await import('@/lib/permissions/unified-permission-service');
     const hasTaskManagementPermission = await PermissionService.hasPermissionById(
       session.user.id,
       'task_management'

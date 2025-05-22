@@ -1,6 +1,6 @@
 // server.js - Custom server for Next.js application on cPanel
 /* eslint-disable no-undef */
-/* eslint-disable no-console */
+
 import { createServer } from 'http';
 import { parse } from 'url';
 import next from 'next';

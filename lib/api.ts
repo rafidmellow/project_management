@@ -449,7 +449,7 @@ export const taskApi = {
     }
   },
 
-  async reorderTasks(columnId: string, tasks: Task[]): Promise<void> {
+  async reorderTasks(columnId: string, tasks: import('@/types/task').Task[]): Promise<void> {
     const response = await fetch(`/api/columns/${columnId}/tasks/reorder`, {
       method: 'POST',
       headers: {

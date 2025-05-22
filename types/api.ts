@@ -14,8 +14,14 @@ import { Session } from 'next-auth';
 export type PermissionCheckFn = (
   resourceId: string,
   session: Session | null,
-  action: string
-) => Promise<{ hasPermission: boolean; error?: string }>;
+  action?: string | undefined
+) => Promise<{
+  hasPermission: boolean;
+  error?: string | null | undefined;
+  task?: any;
+  teamMember?: any;
+  project?: any;
+}>;
 
 /**
  * Pagination parameters

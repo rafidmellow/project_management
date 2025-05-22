@@ -1,7 +1,6 @@
 // scripts/seed-permissions.js
 // Script to seed the database with roles and permissions
 /* eslint-env node */
-/* eslint-disable no-undef, no-console */
 
 import { PrismaClient } from '../prisma/generated/client/index.js';
 import dotenv from 'dotenv';

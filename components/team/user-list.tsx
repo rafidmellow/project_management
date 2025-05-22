@@ -195,7 +195,7 @@ export function UserList({
       console.error('Error deleting user:', error);
 
       // Format the error message for better readability in the toast
-      let errorMessage = error.message || 'Failed to delete user. Please try again.';
+      const errorMessage = error.message || 'Failed to delete user. Please try again.';
 
       // If the error message contains newlines, format it for the toast
       if (errorMessage.includes('\n')) {

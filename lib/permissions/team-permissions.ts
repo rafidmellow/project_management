@@ -13,15 +13,17 @@ import { logActivity } from '@/lib/activity-logger';
 export async function checkTeamMemberPermission(
   teamMemberId: string,
   session: Session | null,
-  action: 'view' | 'update' | 'delete' = 'view'
+  action?: string | undefined
 ): Promise<{
   hasPermission: boolean;
-  teamMember: any | null;
-  error: string | null;
+  error?: string | null | undefined;
+  task?: any;
+  teamMember?: any;
+  project?: any;
 }> {
   // If no session, no permission
   if (!session || !session.user?.id) {
-    return { hasPermission: false, teamMember: null, error: 'Unauthorized' };
+    return { hasPermission: false, error: 'Unauthorized' };
   }
 
   // Get the team member with project and user details
@@ -46,7 +48,7 @@ export async function checkTeamMemberPermission(
   });
 
   if (!teamMember) {
-    return { hasPermission: false, teamMember: null, error: 'Team member not found' };
+    return { hasPermission: false, error: 'Team member not found' };
   }
 
   // Check if user is part of the same project
@@ -71,11 +73,12 @@ export async function checkTeamMemberPermission(
   let hasPermission = false;
 
   // Determine permission based on action
-  if (action === 'view') {
+  const actionType = action || 'view';
+  if (actionType === 'view') {
     // For view actions, check team_view permission or direct involvement
     const hasViewPermission = await PermissionService.hasPermissionById(userId, 'team_view');
     hasPermission = hasViewPermission || isProjectCreator || !!userTeamMember || isSelf;
-  } else if (action === 'update') {
+  } else if (actionType === 'update') {
     // For update actions, check team_management permission or project creator status
     const hasManagementPermission = await PermissionService.hasPermissionById(
       userId,
@@ -91,7 +94,7 @@ export async function checkTeamMemberPermission(
         error: "Cannot update the project creator's membership",
       };
     }
-  } else if (action === 'delete') {
+  } else if (actionType === 'delete') {
     // For delete actions, check team_remove permission or project creator status or self
     const hasRemovePermission = await PermissionService.hasPermissionById(userId, 'team_remove');
     hasPermission = hasRemovePermission || isProjectCreator || isSelf;
@@ -110,13 +113,13 @@ export async function checkTeamMemberPermission(
   const result = {
     hasPermission,
     teamMember,
-    error: hasPermission ? null : `You don't have permission to ${action} this team member`,
+    error: hasPermission ? null : `You don't have permission to ${actionType} this team member`,
   };
 
   // Log permission checks for audit purposes (only log failures)
   if (!hasPermission) {
     console.warn(
-      `Permission denied: User ${session.user.id} attempted to ${action} team member ${teamMemberId}`
+      `Permission denied: User ${session.user.id} attempted to ${actionType} team member ${teamMemberId}`
     );
 
     try {
@@ -125,7 +128,7 @@ export async function checkTeamMemberPermission(
         action: 'permission_denied',
         entityType: 'TeamMember',
         entityId: teamMemberId,
-        description: `Permission denied: User attempted to ${action} team member ${teamMember.user.name || teamMember.user.email}`,
+        description: `Permission denied: User attempted to ${actionType} team member ${teamMember.user.name || teamMember.user.email}`,
         projectId: teamMember.projectId,
       });
     } catch (error) {

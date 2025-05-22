@@ -1,6 +1,5 @@
 // scripts/update-edge-permissions-fixed.js
 // Fixed script to update edge-permission-service.ts with current permission data from the database
-/* eslint-disable no-console */
 
 import fs from 'node:fs';
 import path from 'node:path';

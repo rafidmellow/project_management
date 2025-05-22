@@ -16,11 +16,18 @@ export interface TaskDragData {
 
 export interface KanbanBoardProps {
   projectId: string;
+  columns?: Column[];
   onEditTask?: (taskId: string) => void;
   onDeleteTask?: (taskId: string) => void;
   onEditStatus?: (status: any) => void;
   onDeleteStatus?: (statusId: string) => void;
-  onAddTask?: (statusId: string) => void;
+  onAddTask?: (statusId?: string) => void;
+  onUpdateTask?: (taskId: string) => void;
+  onReorderTasks?: () => void;
+  onMoveTask?: () => void;
+  onError?: () => void;
+  showAddButton?: boolean;
+  emptyStateMessage?: string;
 }
 
 export interface KanbanViewProps {

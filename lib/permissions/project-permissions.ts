@@ -87,16 +87,17 @@ export async function checkProjectPermission(
 export const projectPermissionCheck: PermissionCheckFn = async (
   resourceId: string,
   session: Session | null,
-  action: string
+  action?: string | undefined
 ) => {
   const result = await checkProjectPermission(
     resourceId,
     session,
-    action as 'view' | 'update' | 'delete' | 'create'
+    (action || 'view') as 'view' | 'update' | 'delete' | 'create'
   );
 
   return {
     hasPermission: result.hasPermission,
     error: result.error || undefined,
+    project: result.project || undefined,
   };
 };

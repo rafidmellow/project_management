@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma';
-import { ActivityLogParams, ActivityWithRelations } from '@/types/api';
+import { ActivityLogParams } from '@/types/api';
+import { ActivityWithRelations } from '@/types/activity';
 
 /**
  * Log an activity to the database

@@ -1,6 +1,5 @@
 // scripts/seed.js
 // Script to seed the database with initial data
-/* eslint-disable no-console */
 
 import { PrismaClient } from '../prisma/generated/client/index.js';
 import { hash } from 'bcrypt';

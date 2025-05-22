@@ -35,8 +35,8 @@ export async function POST(request: NextRequest) {
     // Check permission
     const { hasPermission, task, error } = await checkTaskPermission(taskId, session, 'update');
 
-    if (!hasPermission) {
-      return NextResponse.json({ error }, { status: error === 'Task not found' ? 404 : 403 });
+    if (!hasPermission || !session?.user?.id) {
+      return NextResponse.json({ error: error || 'Unauthorized' }, { status: error === 'Task not found' ? 404 : 403 });
     }
 
     // If the task doesn't have an order value or it's 0, initialize it
