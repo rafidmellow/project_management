@@ -1,4 +1,5 @@
 'use client';
+import { devLog } from '@/lib/utils/logger';
 
 import { useState, useRef, useEffect } from 'react';
 import {
@@ -139,7 +140,7 @@ export function KanbanBoard({
         );
 
         // Log for debugging
-        console.log(`Dragging over status column: ${overId}`);
+        devLog(`Dragging over status column: ${overId}`);
       }
     }
 
@@ -226,11 +227,11 @@ export function KanbanBoard({
       // If dropping onto a status column
       if (over.data.current?.type === 'status') {
         const newStatusId = over.id.toString();
-        console.log(`Dropping onto status column: ${newStatusId}`);
+        devLog(`Dropping onto status column: ${newStatusId}`);
 
         // If the status is changing
         if (activeTaskData.statusId !== newStatusId) {
-          console.log(`Moving task ${activeTaskData.id} to status ${newStatusId}`);
+          devLog(`Moving task ${activeTaskData.id} to status ${newStatusId}`);
           // No target task ID needed when dropping onto an empty column
           await moveTask(activeTaskData.id, newStatusId);
         }

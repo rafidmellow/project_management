@@ -1,3 +1,4 @@
+import { devLog } from '@/lib/utils/logger';
 /**
  * API client utility for making requests to our backend API
  */
@@ -167,13 +168,13 @@ export const userApi = {
   },
 
   updateUserProfile: async (userId: string, profileData: any) => {
-    console.log('Updating user profile:', userId, profileData);
+    devLog('Updating user profile:', userId, profileData);
     try {
       const result = await fetchAPI(`/api/users/${userId}`, {
         method: 'PATCH',
         body: JSON.stringify(profileData),
       });
-      console.log('Update profile result:', result);
+      devLog('Update profile result:', result);
       return result;
     } catch (error) {
       console.error('Error in updateUserProfile:', error);
@@ -182,14 +183,7 @@ export const userApi = {
   },
 
   uploadProfileImage: async (userId: string, file: File) => {
-    console.log(
-      'Uploading profile image for user:',
-      userId,
-      'File:',
-      file.name,
-      file.type,
-      file.size
-    );
+    devLog('Uploading profile image for user:', userId, 'File:', file.name, file.type, file.size);
     const formData = new FormData();
     formData.append('image', file);
 
@@ -207,7 +201,7 @@ export const userApi = {
       }
 
       const result = await response.json();
-      console.log('Profile image upload result:', result);
+      devLog('Profile image upload result:', result);
       return result;
     } catch (error) {
       console.error('Error in uploadProfileImage:', error);
@@ -291,10 +285,10 @@ export const projectApi = {
       });
     }
 
-    console.log('Fetching projects with URL:', `/api/projects?${params.toString()}`);
+    devLog('Fetching projects with URL:', `/api/projects?${params.toString()}`);
     try {
       const result = await fetchAPI(`/api/projects?${params.toString()}`);
-      console.log('Projects API response:', result);
+      devLog('Projects API response:', result);
       return result;
     } catch (error) {
       console.error('Error fetching projects:', error);
@@ -303,10 +297,10 @@ export const projectApi = {
   },
 
   getProject: async (id: string) => {
-    console.log('API client: Getting project with ID:', id);
+    devLog('API client: Getting project with ID:', id);
     try {
       const result = await fetchAPI(`/api/projects/${id}`);
-      console.log('API client: Get project response:', result);
+      devLog('API client: Get project response:', result);
       return result;
     } catch (error) {
       console.error('API client: Error getting project:', error);
@@ -322,13 +316,13 @@ export const projectApi = {
   },
 
   updateProject: async (id: string, project: any) => {
-    console.log('API client: Updating project with ID:', id, 'Data:', project);
+    devLog('API client: Updating project with ID:', id, 'Data:', project);
     try {
       const result = await fetchAPI(`/api/projects/${id}`, {
         method: 'PATCH',
         body: JSON.stringify(project),
       });
-      console.log('API client: Update project response:', result);
+      devLog('API client: Update project response:', result);
       return result;
     } catch (error) {
       console.error('API client: Error updating project:', error);
@@ -364,7 +358,7 @@ export const taskApi = {
       }
     });
 
-    console.log('API getTasks params:', params.toString());
+    devLog('API getTasks params:', params.toString());
     return fetchAPI(`/api/tasks?${params.toString()}`);
   },
 
@@ -375,7 +369,7 @@ export const taskApi = {
       return { task: null };
     }
 
-    console.log('API client: Getting task with ID:', id);
+    devLog('API client: Getting task with ID:', id);
     try {
       const result = await fetchAPI(`/api/tasks/${id}`);
       if (!result || !result.task) {
@@ -383,7 +377,7 @@ export const taskApi = {
         return { task: null };
       }
 
-      console.log('API client: Get task success for ID:', id);
+      devLog('API client: Get task success for ID:', id);
       return result;
     } catch (error) {
       console.error('API client: Error getting task:', error);
@@ -396,7 +390,7 @@ export const taskApi = {
   },
 
   createTask: async (task: any) => {
-    console.log('API client: Creating task, data:', JSON.stringify(task));
+    devLog('API client: Creating task, data:', JSON.stringify(task));
     try {
       // Ensure we have required fields
       if (!task.title) {
@@ -414,7 +408,7 @@ export const taskApi = {
         body: JSON.stringify(taskWithoutStatus),
       });
 
-      console.log('API client: Create task response:', result);
+      devLog('API client: Create task response:', result);
       return result;
     } catch (error) {
       console.error('API client: Error creating task:', error);
@@ -423,7 +417,7 @@ export const taskApi = {
   },
 
   updateTask: async (id: string, task: any) => {
-    console.log('API client: Updating task with ID:', id, 'Data:', task);
+    devLog('API client: Updating task with ID:', id, 'Data:', task);
     try {
       // Remove status if present
       const { status, ...taskWithoutStatus } = task;
@@ -431,7 +425,7 @@ export const taskApi = {
         method: 'PATCH',
         body: JSON.stringify(taskWithoutStatus),
       });
-      console.log('API client: Update task response:', result);
+      devLog('API client: Update task response:', result);
       return result;
     } catch (error) {
       console.error('API client: Error updating task:', error);
@@ -440,12 +434,12 @@ export const taskApi = {
   },
 
   deleteTask: async (id: string) => {
-    console.log('API client: Deleting task with ID:', id);
+    devLog('API client: Deleting task with ID:', id);
     try {
       const result = await fetchAPI(`/api/tasks/${id}`, {
         method: 'DELETE',
       });
-      console.log('API client: Delete task response:', result);
+      devLog('API client: Delete task response:', result);
       return result;
     } catch (error) {
       console.error('API client: Error deleting task:', error);
@@ -512,14 +506,14 @@ export const teamManagementApi = {
 
   getUserTeamMemberships: async (userId: string, page = 1, limit = 10) => {
     try {
-      console.log(`Fetching team memberships for user: ${userId}`);
+      devLog(`Fetching team memberships for user: ${userId}`);
       const params = new URLSearchParams();
       params.append('userId', userId);
       params.append('page', page.toString());
       params.append('limit', limit.toString());
 
       const response = await fetchAPI(`/api/team-management?${params.toString()}`);
-      console.log(`Team memberships response:`, response);
+      devLog(`Team memberships response:`, response);
 
       return response.teamMembers || [];
     } catch (error) {

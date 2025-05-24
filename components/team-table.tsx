@@ -1,4 +1,5 @@
 'use client';
+import { devLog } from '@/lib/utils/logger';
 
 import { useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -90,7 +91,7 @@ export function TeamTable({ projectId }: TeamTableProps) {
   // Function to handle search (for a complete implementation, this would need backend support)
   const handleSearch = () => {
     // In a real implementation, you'd pass this to the API
-    console.log('Searching for:', searchQuery);
+    devLog('Searching for:', searchQuery);
   };
 
   // Role badge styling is now handled by the RoleBadge component

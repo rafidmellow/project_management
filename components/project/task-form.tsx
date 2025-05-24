@@ -1,4 +1,5 @@
 'use client';
+import { devLog } from '@/lib/utils/logger';
 
 import * as React from 'react';
 import { useState, useEffect } from 'react';
@@ -161,7 +162,7 @@ export function TaskForm({ projectId, taskId, parentId, onSuccess, onCancel }: T
             .map((tm: { user: User }) => tm.user)
             .filter((user: User | null) => user && user.id);
 
-          console.log(`Fetched ${users.length} team members for task assignment`);
+          devLog(`Fetched ${users.length} team members for task assignment`);
           setTeamMembers(users);
         } else {
           console.error('No team members data found:', data);
@@ -225,11 +226,11 @@ export function TaskForm({ projectId, taskId, parentId, onSuccess, onCancel }: T
         const data = await response.json();
         const task = data.task;
 
-        console.log('Fetched task data:', task);
+        devLog('Fetched task data:', task);
 
         // Extract assignee IDs from the task
         const assigneeIds = task.assignees?.map((a: { userId: string }) => a.userId) || [];
-        console.log('Extracted assignee IDs:', assigneeIds);
+        devLog('Extracted assignee IDs:', assigneeIds);
 
         if (task) {
           // Format dates as YYYY-MM-DD for HTML date inputs
@@ -273,7 +274,7 @@ export function TaskForm({ projectId, taskId, parentId, onSuccess, onCancel }: T
   const onSubmit = async (values: TaskFormValues): Promise<void> => {
     try {
       setIsLoading(true);
-      console.log('Form submission started with values:', values);
+      devLog('Form submission started with values:', values);
 
       const endpoint = taskId ? `/api/tasks/${taskId}` : '/api/tasks';
 
@@ -300,19 +301,19 @@ export function TaskForm({ projectId, taskId, parentId, onSuccess, onCancel }: T
         dueDate: values.dueDate ? new Date(values.dueDate).toISOString() : null,
       };
 
-      console.log('Submitting task with dates:', {
+      devLog('Submitting task with dates:', {
         startDate: payload.startDate,
         endDate: payload.endDate,
         dueDate: payload.dueDate,
       });
 
       // Log assignee information
-      console.log('Assignee IDs being submitted:', values.assigneeIds);
-      console.log(
+      devLog('Assignee IDs being submitted:', values.assigneeIds);
+      devLog(
         'Team members available:',
         teamMembers.map(m => ({ id: m.id, name: m.name || m.email }))
       );
-      console.log('Submitting task data:', payload);
+      devLog('Submitting task data:', payload);
 
       const response = await fetch(endpoint, {
         method,
@@ -322,7 +323,7 @@ export function TaskForm({ projectId, taskId, parentId, onSuccess, onCancel }: T
         body: JSON.stringify(payload),
       });
 
-      console.log('Response status:', response.status);
+      devLog('Response status:', response.status);
 
       if (!response.ok) {
         const errorData = await response
@@ -333,7 +334,7 @@ export function TaskForm({ projectId, taskId, parentId, onSuccess, onCancel }: T
       }
 
       const result = await response.json();
-      console.log('Task form submission result:', result);
+      devLog('Task form submission result:', result);
 
       // Try to refresh the task context if we're in a project context
       try {
@@ -343,7 +344,7 @@ export function TaskForm({ projectId, taskId, parentId, onSuccess, onCancel }: T
         });
         if (typeof window !== 'undefined') {
           window.dispatchEvent(taskContextRefreshEvent);
-          console.log('Dispatched refreshTasks event');
+          devLog('Dispatched refreshTasks event');
         }
       } catch (refreshError) {
         console.warn('Could not refresh task context:', refreshError);

@@ -1,4 +1,5 @@
 'use client';
+import { devLog } from '@/lib/utils/logger';
 
 import { useState, ReactNode } from 'react';
 import Link from 'next/link';
@@ -119,7 +120,7 @@ export function UserList({
     setIsDeleting(true);
 
     try {
-      console.log(`Attempting to delete user: ${userToDelete.id}`);
+      devLog(`Attempting to delete user: ${userToDelete.id}`);
 
       const response = await fetch(`/api/users/${userToDelete.id}`, {
         method: 'DELETE',
@@ -132,13 +133,13 @@ export function UserList({
       let responseBody;
       try {
         responseBody = await response.json();
-        console.log('Response body:', responseBody);
+        devLog('Response body:', responseBody);
       } catch (e) {
         console.error('Could not parse response as JSON:', e);
       }
 
       if (!response.ok) {
-        console.log(`Error response: ${response.status} - ${response.statusText}`);
+        devLog(`Error response: ${response.status} - ${response.statusText}`);
 
         // Special handling for users with associated data
         if (response.status === 409) {

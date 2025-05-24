@@ -1,3 +1,4 @@
+import { devLog } from '@/lib/utils/logger';
 import prisma from '../prisma';
 import { Prisma, User } from '@prisma/client';
 import { hash } from 'bcrypt';
@@ -450,7 +451,7 @@ export async function updateUser(id: string, data: UserUpdateInput) {
     userToUpdate.password = await hash(password, 10);
   }
 
-  console.log('Updating user with data:', userToUpdate);
+  devLog('Updating user with data:', userToUpdate);
 
   const user = await prisma.user.update({
     where: { id },

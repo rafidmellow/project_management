@@ -1,4 +1,5 @@
 'use client';
+import { devLog } from '@/lib/utils/logger';
 
 import { useState } from 'react';
 import Link from 'next/link';
@@ -90,7 +91,7 @@ export function TeamNavItem({ collapsed = false }: TeamNavItemProps) {
 
     // Only log in development mode
     if (process.env.NODE_ENV === 'development') {
-      console.log(`Permission check for ${item.title}: ${item.permission} = ${hasPermission}`);
+      devLog(`Permission check for ${item.title}: ${item.permission} = ${hasPermission}`);
     }
 
     // Always show these items for admin users regardless of permission check

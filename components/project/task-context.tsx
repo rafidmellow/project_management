@@ -1,4 +1,5 @@
 'use client';
+import { devLog } from '@/lib/utils/logger';
 
 import React, { createContext, useContext, useState, useEffect, useMemo } from 'react';
 import { useToast } from '@/hooks/use-toast';
@@ -57,7 +58,7 @@ export function TaskProvider({
       const url =
         projectId === 'all' ? `/api/projects/all/statuses` : `/api/projects/${projectId}/statuses`;
 
-      console.log('Fetching statuses from URL:', url);
+      devLog('Fetching statuses from URL:', url);
       const response = await fetch(url);
       if (!response.ok) throw new Error('Failed to fetch statuses');
       const data = await response.json();
@@ -107,7 +108,7 @@ export function TaskProvider({
           ? `/api/team-management/all?limit=100`
           : `/api/team-management?projectId=${projectId}`;
 
-      console.log('Fetching users from URL:', url);
+      devLog('Fetching users from URL:', url);
       const response = await fetch(url);
       if (!response.ok) throw new Error('Failed to fetch users');
       const data = await response.json();
@@ -539,7 +540,7 @@ export function TaskProvider({
     const handleRefreshTasks = (event: any) => {
       // Check if this event is for our project
       if (event.detail?.projectId === projectId) {
-        console.log('TaskContext received refresh event for project:', projectId);
+        devLog('TaskContext received refresh event for project:', projectId);
         fetchTasks();
       }
     };

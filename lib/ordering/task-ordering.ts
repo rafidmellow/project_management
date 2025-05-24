@@ -1,3 +1,4 @@
+import { devLog } from '@/lib/utils/logger';
 import prisma from '@/lib/prisma';
 
 /**
@@ -110,7 +111,7 @@ export async function rebalanceTaskOrders(
     // Execute all updates in a transaction
     await prisma.$transaction(updates);
 
-    console.log(
+    devLog(
       `Rebalanced ${tasks.length} tasks for project ${projectId}, parent ${parentId || 'none'}`
     );
   } catch (error) {

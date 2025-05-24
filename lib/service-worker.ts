@@ -1,3 +1,4 @@
+import { devLog } from '@/lib/utils/logger';
 /**
  * Service Worker Registration Utility
  *
@@ -31,7 +32,7 @@ export const isBackgroundSyncSupported = (): boolean =>
 // Register the service worker with retry mechanism
 export async function registerServiceWorker(maxRetries = 3) {
   if (!isServiceWorkerSupported()) {
-    console.log('Service Workers are not supported in this browser');
+    devLog('Service Workers are not supported in this browser');
     return false;
   }
 
@@ -60,11 +61,11 @@ export async function registerServiceWorker(maxRetries = 3) {
         updateViaCache: 'none', // Always fetch fresh service worker
       });
 
-      console.log('Service Worker registered with scope:', registration.scope);
+      devLog('Service Worker registered with scope:', registration.scope);
 
       // Wait for the service worker to be ready
       await navigator.serviceWorker.ready;
-      console.log('Service Worker is ready');
+      devLog('Service Worker is ready');
 
       return true;
     } catch (error) {
@@ -94,7 +95,7 @@ export async function registerServiceWorker(maxRetries = 3) {
       const jitter = Math.random() * 1000;
       const delay = baseDelay + jitter;
 
-      console.log(`Retrying in ${Math.round(delay)}ms...`);
+      devLog(`Retrying in ${Math.round(delay)}ms...`);
       await new Promise(resolve => setTimeout(resolve, delay));
     }
   }
@@ -105,7 +106,7 @@ export async function registerServiceWorker(maxRetries = 3) {
 // Request background sync permission
 export async function requestBackgroundSyncPermission() {
   if (!isBackgroundSyncSupported()) {
-    console.log('Background Sync is not supported in this browser');
+    devLog('Background Sync is not supported in this browser');
     return false;
   }
 
@@ -113,7 +114,7 @@ export async function requestBackgroundSyncPermission() {
     // Request notification permission (often needed for background sync)
     const notificationPermission = await Notification.requestPermission();
     if (notificationPermission !== 'granted') {
-      console.log('Notification permission not granted');
+      devLog('Notification permission not granted');
     }
 
     return true;
@@ -126,7 +127,7 @@ export async function requestBackgroundSyncPermission() {
 // Register a background sync
 export async function registerBackgroundSync(): Promise<boolean> {
   if (!isBackgroundSyncSupported()) {
-    console.log('Background Sync is not supported in this browser');
+    devLog('Background Sync is not supported in this browser');
     return false;
   }
 
@@ -136,13 +137,13 @@ export async function registerBackgroundSync(): Promise<boolean> {
     // Register attendance sync
     if ('sync' in registration) {
       await registration.sync.register('attendance-sync');
-      console.log('Attendance background sync registered!');
+      devLog('Attendance background sync registered!');
 
       // Register auto-checkout sync
       await registration.sync.register('auto-checkout-sync');
-      console.log('Auto-checkout background sync registered!');
+      devLog('Auto-checkout background sync registered!');
     } else {
-      console.log('Sync API not available in this browser');
+      devLog('Sync API not available in this browser');
     }
 
     return true;
@@ -155,7 +156,7 @@ export async function registerBackgroundSync(): Promise<boolean> {
 // Register auto-checkout sync specifically
 export async function registerAutoCheckoutSync(): Promise<boolean> {
   if (!isBackgroundSyncSupported()) {
-    console.log('Background Sync is not supported in this browser');
+    devLog('Background Sync is not supported in this browser');
     return false;
   }
 
@@ -163,10 +164,10 @@ export async function registerAutoCheckoutSync(): Promise<boolean> {
     const registration = (await navigator.serviceWorker.ready) as ExtendedServiceWorkerRegistration;
     if ('sync' in registration) {
       await registration.sync.register('auto-checkout-sync');
-      console.log('Auto-checkout sync registered!');
+      devLog('Auto-checkout sync registered!');
       return true;
     } else {
-      console.log('Sync API not available in this browser');
+      devLog('Sync API not available in this browser');
       return false;
     }
   } catch (error) {

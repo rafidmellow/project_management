@@ -1,4 +1,5 @@
 'use client';
+import { devLog } from '@/lib/utils/logger';
 
 import { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -56,7 +57,7 @@ export function UnifiedProfileView({
     if (files && files.length > 0) {
       try {
         const file = files[0];
-        console.log('File selected:', file.name);
+        devLog('File selected:', file.name);
 
         // Create form data
         const formData = new FormData();

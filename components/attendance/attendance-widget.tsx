@@ -1,4 +1,5 @@
 'use client';
+import { devLog } from '@/lib/utils/logger';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import {
@@ -101,7 +102,7 @@ export function AttendanceWidget() {
         if (registered && syncSupported) {
           // Register for background sync
           await registerBackgroundSync();
-          console.log('Background sync registered successfully');
+          devLog('Background sync registered successfully');
         }
 
         // Load pending actions from IndexedDB
@@ -118,17 +119,17 @@ export function AttendanceWidget() {
   // Listen for service worker messages with enhanced handling
   useEffect(() => {
     const cleanup = listenForServiceWorkerMessages(data => {
-      console.log('Service worker message received:', data.type);
+      devLog('Service worker message received:', data.type);
 
       switch (data.type) {
         case 'SYNC_SUCCESS':
-          console.log('Sync success:', data.record);
+          devLog('Sync success:', data.record);
           // Refresh attendance data after successful sync
           fetchAttendance();
           break;
 
         case 'SYNC_REDUNDANT':
-          console.log('Sync redundant:', data.record, data.message);
+          devLog('Sync redundant:', data.record, data.message);
           // This is a "success" case where the server state already matches what we wanted
           toast({
             title: 'Already Synchronized',
@@ -140,7 +141,7 @@ export function AttendanceWidget() {
           break;
 
         case 'SYNC_FAILURE':
-          console.log('Sync failure:', data.record, data.error);
+          devLog('Sync failure:', data.record, data.error);
           toast({
             title: 'Sync Failed',
             description: data.error || 'Failed to sync attendance record.',
@@ -151,7 +152,7 @@ export function AttendanceWidget() {
           break;
 
         case 'SYNC_PERMANENT_FAILURE':
-          console.log('Sync permanent failure:', data.record, data.error);
+          devLog('Sync permanent failure:', data.record, data.error);
           toast({
             title: 'Sync Failed Permanently',
             description: `An attendance record could not be synced after multiple attempts: ${data.error}`,
@@ -162,7 +163,7 @@ export function AttendanceWidget() {
           break;
 
         case 'SYNC_COMPLETED': {
-          console.log('Sync completed:', data.results);
+          devLog('Sync completed:', data.results);
           setSyncInProgress(false);
 
           // Refresh pending actions
@@ -221,7 +222,7 @@ export function AttendanceWidget() {
         }
 
         default:
-          console.log('Unknown message type:', data.type, data);
+          devLog('Unknown message type:', data.type, data);
       }
     });
 

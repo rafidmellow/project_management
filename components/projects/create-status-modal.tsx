@@ -1,4 +1,5 @@
 'use client';
+import { devLog } from '@/lib/utils/logger';
 
 import { useState } from 'react';
 import {
@@ -84,7 +85,7 @@ export function CreateStatusModal({
         throw new Error(data.error || 'Failed to create status');
       }
 
-      console.log('Status creation response:', data);
+      devLog('Status creation response:', data);
 
       toast({
         title: 'Status created',
@@ -123,7 +124,7 @@ export function CreateStatusModal({
     } catch (err: any) {
       console.error('Error creating status:', err);
       const errorMessage = err.message || 'Failed to create status. Please try again.';
-      console.log('Setting error message:', errorMessage);
+      devLog('Setting error message:', errorMessage);
       setError(errorMessage);
     } finally {
       setIsSubmitting(false);
