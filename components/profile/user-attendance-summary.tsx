@@ -1,4 +1,5 @@
 'use client';
+import { devLog } from '@/lib/utils/logger';
 
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -38,7 +39,7 @@ export function UserAttendanceSummary({ userId }: UserAttendanceSummaryProps) {
         setIsError(false);
         setErrorMessage('');
 
-        console.log(`Fetching attendance for user ${userId}`);
+        devLog(`Fetching attendance for user ${userId}`);
         const response = await fetch(`/api/users/${userId}/attendance?limit=5`);
 
         if (!response.ok) {
@@ -47,7 +48,7 @@ export function UserAttendanceSummary({ userId }: UserAttendanceSummaryProps) {
         }
 
         const data = await response.json();
-        console.log('Attendance data:', data);
+        devLog('Attendance data:', data);
 
         // Set attendance records with safety checks
         if (Array.isArray(data.attendanceRecords)) {

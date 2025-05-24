@@ -1,4 +1,5 @@
 'use client';
+import { devLog } from '@/lib/utils/logger';
 
 import { useEffect, useState } from 'react';
 import { registerServiceWorker, isServiceWorkerSupported } from '@/lib/service-worker';
@@ -16,18 +17,18 @@ export function ServiceWorkerProvider({ children }: { children: React.ReactNode 
 
     // Check if service workers are supported
     if (!isServiceWorkerSupported()) {
-      console.log('Service Workers are not supported in this browser');
+      devLog('Service Workers are not supported in this browser');
       return;
     }
 
     const registerSW = async () => {
       try {
-        console.log('Attempting to register Service Worker...');
+        devLog('Attempting to register Service Worker...');
         const registered = await registerServiceWorker();
         setSwRegistered(registered);
 
         if (registered) {
-          console.log('✅ Service Worker registered successfully');
+          devLog('✅ Service Worker registered successfully');
         } else {
           console.warn('⚠️ Service Worker registration failed - check console for details');
         }
@@ -56,7 +57,7 @@ export function ServiceWorkerProvider({ children }: { children: React.ReactNode 
         const registrations = await navigator.serviceWorker.getRegistrations();
 
         if (registrations.length === 0 && !swRegistered) {
-          console.log('No service worker found, attempting to register');
+          devLog('No service worker found, attempting to register');
           const registered = await registerServiceWorker();
           setSwRegistered(registered);
         }
@@ -69,7 +70,7 @@ export function ServiceWorkerProvider({ children }: { children: React.ReactNode 
 
     // Also check when the app comes back online
     const handleOnline = () => {
-      console.log('App is back online, checking service worker registration');
+      devLog('App is back online, checking service worker registration');
       checkRegistration();
     };
 

@@ -1,4 +1,5 @@
 'use client';
+import { devLog } from '@/lib/utils/logger';
 
 import { useDroppable } from '@dnd-kit/core';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
@@ -56,7 +57,7 @@ export const StatusColumn = React.memo(function StatusColumnImpl({
 
   // Log when a column is being dragged over
   if (isOver) {
-    console.log(`Status column ${status.id} (${status.name}) is being dragged over`);
+    devLog(`Status column ${status.id} (${status.name}) is being dragged over`);
   }
 
   // Calculate classes for different states

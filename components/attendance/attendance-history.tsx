@@ -1,4 +1,5 @@
 'use client';
+import { devLog } from '@/lib/utils/logger';
 
 import { useState, useEffect } from 'react';
 import {
@@ -152,7 +153,7 @@ export function AttendanceHistory() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     // Implement search functionality
-    console.log('Searching for:', searchQuery);
+    devLog('Searching for:', searchQuery);
     // Reset to page 1 when searching
     setPage(1);
     fetchAttendanceHistory();

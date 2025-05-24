@@ -1,4 +1,5 @@
 'use client';
+import { devLog } from '@/lib/utils/logger';
 
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
@@ -35,7 +36,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
     setSuccess('');
 
     try {
-      console.log('Attempting to sign in with:', { email, callbackUrl });
+      devLog('Attempting to sign in with:', { email, callbackUrl });
 
       const result = await signIn('credentials', {
         redirect: false,
@@ -44,12 +45,12 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
         callbackUrl: redirectUrl,
       });
 
-      console.log('Sign in result:', result);
+      devLog('Sign in result:', result);
 
       if (result?.error) {
         setError('Invalid email or password');
       } else {
-        console.log('Redirecting to:', redirectUrl);
+        devLog('Redirecting to:', redirectUrl);
         // Use window.location for a hard redirect without delay
         window.location.href = redirectUrl;
       }
